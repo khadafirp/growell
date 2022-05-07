@@ -1,0 +1,198 @@
+import 'package:flutter/material.dart';
+import 'package:growell/color/list_color.dart';
+import 'package:growell/widget/card/card_list_produk.dart';
+import 'package:growell/widget/header/card_header_balance.dart';
+
+class BerandaPenjualPage extends StatefulWidget {
+  BerandaPenjualPage({Key? key}) : super(key: key);
+
+  @override
+  _BerandaPenjualPageState createState() => _BerandaPenjualPageState();
+}
+
+class _BerandaPenjualPageState extends State<BerandaPenjualPage> {
+
+  bool showListFloating = false;
+
+  Widget _listFloating() {
+    return AnimatedOpacity(
+      opacity: showListFloating ? 1.0 : 0.0,
+      duration: const Duration(milliseconds: 500),
+      child: Container(
+        height: MediaQuery.of(context).size.height * 0.17,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width * 0.45,
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Tambah Produk"
+                  ),
+                  FloatingActionButton(
+                    onPressed: (){},
+                    child: Icon(
+                      Icons.add,
+                      color: Colors.white,
+                    ),
+                    backgroundColor: ListColor().baseColor,
+                  )
+                ],
+              ),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width * 0.45,
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Edit Produk"
+                  ),
+                  FloatingActionButton(
+                    onPressed: (){},
+                    child: Icon(
+                      Icons.edit,
+                      color: Colors.white,
+                    ),
+                    backgroundColor: ListColor().baseColor,
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      )
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          CardHeaderBalance(),
+          Positioned(
+            top: 0,
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              margin: EdgeInsets.only(top: 180),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))
+              ),
+              child: SingleChildScrollView(
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.95,
+                  padding: EdgeInsets.only(bottom: 250),
+                  child: GridView.builder(
+                    padding: const EdgeInsets.only(bottom: 16, top: 40),
+                    shrinkWrap: true,
+                    itemCount: 20,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2),
+                    itemBuilder: (BuildContext context, int index) {
+                      return CardListProduk();
+                    },
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            top: 0,
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.08,
+              margin: EdgeInsets.only(top: 150),
+              child: Column(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.08,
+                    padding: const EdgeInsets.only(right: 32, left: 32),
+                    margin: const EdgeInsets.only(left: 16, right: 16),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          spreadRadius: 1,
+                          blurRadius: 1,
+                          offset: const Offset(0, 1), // changes position of shadow
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Saldo Rp 0"),
+                        Container(
+                          height: MediaQuery.of(context).size.height * 0.05,
+                          width: MediaQuery.of(context).size.width * 0.11,
+                          decoration: BoxDecoration(
+                            color: ListColor().baseColor,
+                            borderRadius: BorderRadius.all(Radius.circular(30))
+                          ),
+                          child: Icon(
+                            Icons.qr_code_scanner_outlined,
+                            color: Colors.white,
+                          ),
+                        )
+                      ],
+                    )
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          showListFloating == true ?
+          _listFloating()
+          :
+          SizedBox(height: 0,),
+          Container(
+            width: MediaQuery.of(context).size.width * 0.45,
+            padding: EdgeInsets.all(8),
+            alignment: Alignment.bottomRight,
+            child: FloatingActionButton(
+              onPressed: (){
+                setState(() {
+                  if(showListFloating){
+                    showListFloating = false;
+                  }else{
+                    showListFloating = true;
+                  }
+                });
+              }, 
+              child: Icon(
+                showListFloating ? Icons.arrow_downward : Icons.menu,
+                color: Colors.white,
+              ),
+              backgroundColor: ListColor().baseColor,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
