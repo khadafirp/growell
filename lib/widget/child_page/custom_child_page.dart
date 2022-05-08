@@ -34,23 +34,26 @@ class _CustomChildPageState extends State<CustomChildPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.19,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Icon(
-                        Icons.arrow_back,
-                        color: ListColor().baseColor,
-                      ),
-                      Text(
-                        "Kembali",
-                        style: TextStyle(
+                InkWell(
+                  onTap: () => Navigator.of(context).pop(),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.19,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Icon(
+                          Icons.arrow_back,
                           color: ListColor().baseColor,
-                          fontSize: 13
+                        ),
+                        Text(
+                          "Kembali",
+                          style: TextStyle(
+                            color: ListColor().baseColor,
+                            fontSize: 13
+                          )
                         )
-                      )
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ],
