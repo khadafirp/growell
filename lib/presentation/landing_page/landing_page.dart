@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:growell/color/list_color.dart';
-import 'package:growell/presentation/landing_page/pembeli/beranda_pembeli_page.dart';
+import 'package:growell/presentation/landing_page/pembeli/beranda/beranda_pembeli_page.dart';
 import 'package:growell/presentation/landing_page/penjual/beranda/beranda_penjual_page.dart';
 
 class LandingPage extends StatefulWidget {
