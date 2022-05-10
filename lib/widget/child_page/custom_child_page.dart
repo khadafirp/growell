@@ -3,7 +3,8 @@ import 'package:growell/color/list_color.dart';
 
 class CustomChildPage extends StatefulWidget {
   Widget? child;
-  CustomChildPage({Key? key, this.child}) : super(key: key);
+  String? title;
+  CustomChildPage({Key? key, this.child, this.title}) : super(key: key);
 
   @override
   _CustomChildPageState createState() => _CustomChildPageState();
@@ -16,7 +17,7 @@ class _CustomChildPageState extends State<CustomChildPage> {
       body: Column(
         children: [
           Container(
-            height: MediaQuery.of(context).size.height * 0.12,
+            height: MediaQuery.of(context).size.height * 0.15,
             width: MediaQuery.of(context).size.width,
             padding: EdgeInsets.only(left: 16, top: 32),
             decoration: BoxDecoration(
@@ -56,16 +57,29 @@ class _CustomChildPageState extends State<CustomChildPage> {
                     ),
                   ),
                 ),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.70,
+                  margin: EdgeInsets.only(top: 16),
+                  child: Text(
+                    widget.title ?? "Title",
+                    style: TextStyle(
+                      color: ListColor().baseColor,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
+                )
               ],
             ),
           ),
           Container(
-            height: MediaQuery.of(context).size.height * 0.86,
+            height: MediaQuery.of(context).size.height * 0.83,
             width: MediaQuery.of(context).size.width,
             child: SingleChildScrollView(
               child: Container(
-                height: MediaQuery.of(context).size.height * 0.86,
+                height: MediaQuery.of(context).size.height * 0.83,
                 width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.all(16),
                 child: widget.child!,
               ),
             ),

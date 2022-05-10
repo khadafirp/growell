@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:growell/base/routes_name.dart';
 import 'package:growell/color/list_color.dart';
 import 'package:growell/widget/card/card_list_produk.dart';
 import 'package:growell/widget/header/card_header_balance.dart';
@@ -19,56 +20,80 @@ class _BerandaPenjualPageState extends State<BerandaPenjualPage> {
       opacity: showListFloating ? 1.0 : 0.0,
       duration: const Duration(milliseconds: 500),
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.17,
+        height: MediaQuery.of(context).size.height * 0.18,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
-              width: MediaQuery.of(context).size.width * 0.45,
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.grey[100],
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Tambah Produk"
-                  ),
-                  FloatingActionButton(
-                    onPressed: (){},
-                    child: Icon(
-                      Icons.add,
-                      color: Colors.white,
+            InkWell(
+              onTap: () {
+                Navigator.of(context).pushNamed(RoutesName.addProdukPage);
+              },
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.45,
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: ListColor().baseColor,
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Tambah Produk",
+                      style: TextStyle(
+                        color: Colors.white
+                      ),
                     ),
-                    backgroundColor: ListColor().baseColor,
-                  )
-                ],
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.11,
+                      height: MediaQuery.of(context).size.height * 0.05,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(30))
+                      ),
+                      child: Icon(
+                        Icons.add,
+                        color: ListColor().baseColor,
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
-            Container(
-              width: MediaQuery.of(context).size.width * 0.45,
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.grey[100],
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Edit Produk"
-                  ),
-                  FloatingActionButton(
-                    onPressed: (){},
-                    child: Icon(
-                      Icons.edit,
-                      color: Colors.white,
+            InkWell(
+              onTap: () {
+                Navigator.of(context).pushNamed(RoutesName.addProdukPage);
+              },
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.45,
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: ListColor().baseColor,
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Edit Produk",
+                      style: TextStyle(
+                        color: Colors.white
+                      ),
                     ),
-                    backgroundColor: ListColor().baseColor,
-                  )
-                ],
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.11,
+                      height: MediaQuery.of(context).size.height * 0.05,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(30))
+                      ),
+                      child: Icon(
+                        Icons.edit,
+                        color: ListColor().baseColor,
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ],

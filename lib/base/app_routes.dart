@@ -3,6 +3,7 @@ import 'package:growell/base/routes_name.dart';
 import 'package:growell/presentation/first_page.dart';
 import 'package:growell/presentation/landing_page/landing_page.dart';
 import 'package:growell/presentation/landing_page/pembeli/list_toko/list_toko_page.dart';
+import 'package:growell/presentation/landing_page/penjual/produk/add_produk_page.dart';
 import 'package:growell/presentation/login/login_page.dart';
 import 'package:growell/presentation/regis/regis_page.dart';
 
@@ -20,7 +21,8 @@ class AppRoutes{
     RoutesName.loginPage: (context) => LoginPage(),
     RoutesName.regisPage: (context) => RegisPage(),
     RoutesName.landingPage: (context) => LandingPage(),
-    RoutesName.listTokoPage: (context) => ListTokoPage()
+    RoutesName.listTokoPage: (context) => ListTokoPage(),
+    RoutesName.addProdukPage: (context) => AddProdukPage()
   };
 
   static Route<dynamic> getGenerateRoutes(RouteSettings settings) {
@@ -42,6 +44,10 @@ class AppRoutes{
         final WidgetBuilder? builder = routes[settings.name];
         return MaterialPageRoute(builder: builder!, settings: settings);
       case RoutesName.listTokoPage:
+        final routes = getRoutesWithSettings(settings);
+        final WidgetBuilder? builder = routes[settings.name];
+        return MaterialPageRoute(builder: builder!, settings: settings);
+      case RoutesName.addProdukPage:
         final routes = getRoutesWithSettings(settings);
         final WidgetBuilder? builder = routes[settings.name];
         return MaterialPageRoute(builder: builder!, settings: settings);
