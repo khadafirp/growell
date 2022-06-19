@@ -6,6 +6,7 @@ import 'package:growell/base/module/base_modul.dart';
 import 'package:growell/base/routes_name.dart';
 
 void main() {
+  initModule();
   runApp(MyApp(initialRoute: RoutesName.loginPage,));
 }
 

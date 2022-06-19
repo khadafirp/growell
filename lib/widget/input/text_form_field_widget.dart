@@ -24,6 +24,12 @@ class TextFormFieldWidget extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hintText,
       ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Form harus diisi.';
+        }
+        return null;
+      },
     );
   }
 }
