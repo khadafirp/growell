@@ -1,9 +1,8 @@
 import 'package:get/get_connect.dart';
 
 class AddUserDTO {
-  String? idUser, username, password, email, noTelp, alamatToko, namaToko, descToko, fullname;
+  String? idUser, username, password, email, noTelp, alamatToko, namaToko, descToko, fullname, path;
   int? userKategori;
-  MultipartFile? path;
 
   AddUserDTO(
     {

@@ -6,3 +6,15 @@ class LoginState extends Equatable{
 }
 
 class PageLoading extends LoginState{}
+
+class LoadinLoginState extends LoginState{}
+
+class SuccessLoginState extends LoginState {
+  dynamic data;
+  SuccessLoginState({this.data});
+}
+
+class ErrorLoginState extends LoginState {
+  String message;
+  ErrorLoginState({this.message = ""});
+}

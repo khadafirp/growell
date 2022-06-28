@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class TextFormFieldWidget extends StatelessWidget {
   String? hintText;
-  bool obscureText;
+  bool obscureText, enabled;
   TextInputType? textInputType;
   TextEditingController? controller;
   TextFormFieldWidget(
@@ -11,6 +11,7 @@ class TextFormFieldWidget extends StatelessWidget {
       this.hintText, 
       this.textInputType,
       this.obscureText = false,
+      this.enabled = true,
       this.controller
     }
   ) : super(key: key);
@@ -21,6 +22,7 @@ class TextFormFieldWidget extends StatelessWidget {
       keyboardType: textInputType,
       obscureText: obscureText,
       controller: controller,
+      enabled: enabled,
       decoration: InputDecoration(
         hintText: hintText,
       ),

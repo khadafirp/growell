@@ -1,11 +1,15 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:growell/base/module/base_modul.dart';
 import 'package:growell/presentation/login/bloc/login_bloc.dart';
+import 'package:growell/presentation/regis/bloc/regis_bloc.dart';
 
 class AppBloc{
   static List<BlocProvider> getBlocProviders() => [
     BlocProvider<LoginBloc>(
       create: (context) => injector.get<LoginBloc>(),
+    ),
+    BlocProvider<RegisBloc>(
+      create: (context) => injector.get<RegisBloc>(),
     )
   ];
 }

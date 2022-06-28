@@ -9,7 +9,7 @@ class AddUserModel {
   factory AddUserModel.fromJson(dynamic json){
     return AddUserModel(
       entity: AddUserEntity(
-        statusCode: json["status_code"],
+        statusCode: json["statusCode"],
         message: json['message'],
         data: json['data']
       )

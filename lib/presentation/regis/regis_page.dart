@@ -1,8 +1,19 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get_connect.dart';
 import 'package:growell/color/list_color.dart';
+import 'package:growell/data/parameters/add_user_dto.dart';
+import 'package:growell/presentation/regis/bloc/regis_bloc.dart';
+import 'package:growell/presentation/regis/bloc/regis_event.dart';
+import 'package:growell/presentation/regis/bloc/regis_state.dart';
 import 'package:growell/widget/button/button_base_custom.dart';
 import 'package:growell/widget/input/text_form_field_widget.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:uuid/uuid.dart';
 
 class RegisPage extends StatefulWidget {
   RegisPage({Key? key}) : super(key: key);
@@ -18,6 +29,13 @@ class _RegisPageState extends State<RegisPage> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController noHpController = TextEditingController();
+  TextEditingController namaTokoController = TextEditingController();
+  TextEditingController alamatTokoController = TextEditingController();
+  TextEditingController deskripsiTokoController = TextEditingController();
+  TextEditingController imageController = TextEditingController();
+
+  RegisBloc? regisBloc;
+
   String idKategori = "";
   String namaKategori = "";
   final _formKey = GlobalKey<FormState>();
@@ -37,12 +55,49 @@ class _RegisPageState extends State<RegisPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    regisBloc = BlocProvider.of<RegisBloc>(context);
 
     setState(() {
       idKategori = items[0]['id'];
       namaKategori = items[0]['text'];
     });
   }
+
+  Widget listener(){
+    return BlocConsumer<RegisBloc, RegisState>(
+      bloc: regisBloc,
+      builder: (context, state) {
+        return const SizedBox();
+      }, 
+      listener: (context, state) {
+        if(state is SuccessRegisState){
+          Fluttertoast.showToast(
+            msg: "Selamat, pendaftaran berhasil.",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: ListColor().baseColor,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
+        }
+      }
+    );
+  }
+
+  _getFromCamera() async {
+    PickedFile? pickedFile = await ImagePicker().getImage(
+        source: ImageSource.gallery,
+        maxWidth: 1800,
+        maxHeight: 1800,
+    );
+    if (pickedFile != null) {
+        File imageFile = File(pickedFile.path);
+        setState(() {
+          imageController.text = imageFile.path;
+        });
+    }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +183,7 @@ class _RegisPageState extends State<RegisPage> {
                         ),
                         TextFormFieldWidget(
                           hintText: "E-Mail",
-                          controller: usernameController,
+                          controller: emailController,
                         ),
                       ],
                     ),
@@ -183,17 +238,120 @@ class _RegisPageState extends State<RegisPage> {
                         ),
                         TextFormFieldWidget(
                           hintText: "No Handphone",
-                          controller: usernameController,
+                          controller: noHpController,
                         ),
                       ],
                     ),
                     SizedBox(height: 32,),
 
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Foto " + (idKategori == "2" ? "Anda" : "Toko"),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 11
+                          ),
+                        ),
+                        InkWell(
+                          onTap: (){
+                            _getFromCamera();
+                          },
+                          child: TextFormFieldWidget(
+                            hintText: "Foto " + (idKategori == "2" ? "Anda" : "Toko"),
+                            controller: imageController,
+                            enabled: false,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    SizedBox(height: 32,),
+
+                    idKategori == "2" ?
+                    const SizedBox()
+                    :
+                    Column(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Nama Toko",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 11
+                              ),
+                            ),
+                            TextFormFieldWidget(
+                              hintText: "Nama Toko",
+                              controller: namaTokoController,
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 32,),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Alamat Toko",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 11
+                              ),
+                            ),
+                            TextFormFieldWidget(
+                              hintText: "Alamat Toko",
+                              controller: alamatTokoController,
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 32,),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Deskripsi Toko",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 11
+                              ),
+                            ),
+                            TextFormFieldWidget(
+                              hintText: "Deskripsi Toko",
+                              controller: deskripsiTokoController,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+
+                    SizedBox(height: 32,),
+
+                    listener(),
+
                     ButtonBaseCustom(
-                      text: "Masuk",
+                      text: "Daftar",
                       function: (){
                         if(_formKey.currentState!.validate()){
-                          // login();
+                          regisBloc!.add(
+                            DaftarEvent(
+                              entity: AddUserDTO(
+                                idUser: Uuid().v4(),
+                                fullname: fullnameController.text,
+                                userKategori: int.parse(idKategori),
+                                email: emailController.text,
+                                username: usernameController.text,
+                                password: passwordController.text,
+                                noTelp: noHpController.text,
+                                namaToko: namaTokoController.text,
+                                alamatToko: alamatTokoController.text,
+                                descToko: deskripsiTokoController.text,
+                                path: imageController.text
+                              )
+                            )
+                          );
                         }
                       }
                     ),
