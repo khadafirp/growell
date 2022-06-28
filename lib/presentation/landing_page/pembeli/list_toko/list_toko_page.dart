@@ -16,7 +16,7 @@ class _ListTokoPageState extends State<ListTokoPage> {
       child: Column(
         children: [
           Container(
-            height: MediaQuery.of(context).size.height * 0.86,
+            height: MediaQuery.of(context).size.height * 0.79,
             child: ListView.builder(
               shrinkWrap: true,
               itemCount: 20,
