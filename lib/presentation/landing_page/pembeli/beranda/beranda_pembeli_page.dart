@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:growell/base/routes_name.dart';
+import 'package:growell/data/models/login_model.dart';
 import 'package:growell/widget/header/card_header_pembeli.dart';
 
 class BerandaPembeliPage extends StatefulWidget {
-  BerandaPembeliPage({Key? key}) : super(key: key);
+  LoginEntity? entity;
+  BerandaPembeliPage({Key? key, this.entity}) : super(key: key);
 
   @override
   _BerandaPembeliPageState createState() => _BerandaPembeliPageState();
 }
 
 class _BerandaPembeliPageState extends State<BerandaPembeliPage> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +28,10 @@ class _BerandaPembeliPageState extends State<BerandaPembeliPage> {
         color: Colors.white,
         child: Column(
           children: [
-            CardHeaderPembeli(),
+            CardHeaderPembeli(
+              fullname: widget.entity!.fullname,
+              badge: widget.entity!.userKategori.toString(),
+            ),
             InkWell(
               onTap: () => Navigator.of(context).pushNamed(RoutesName.listTokoPage),
               child: Container(

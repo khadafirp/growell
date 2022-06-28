@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:growell/data/models/login_model.dart';
 
 class LoginState extends Equatable{
   @override
@@ -10,7 +11,7 @@ class PageLoading extends LoginState{}
 class LoadinLoginState extends LoginState{}
 
 class SuccessLoginState extends LoginState {
-  dynamic data;
+  LoginEntity? data;
   SuccessLoginState({this.data});
 }
 

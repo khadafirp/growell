@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:growell/color/list_color.dart';
 
 class CardHeaderBalance extends StatelessWidget {
-  const CardHeaderBalance({Key? key}) : super(key: key);
+  String? fullname, badge;
+  CardHeaderBalance({Key? key, this.fullname, this.badge}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +87,7 @@ class CardHeaderBalance extends StatelessWidget {
               Container(
                 width: MediaQuery.of(context).size.width * 0.7,
                 child: Text(
-                  "Khadafi Rohman Prihanda",
+                  fullname ?? "",
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     fontSize: 12,
@@ -94,8 +95,8 @@ class CardHeaderBalance extends StatelessWidget {
                   )
                 ),
               ),
-              const Text(
-                "Penjual",
+              Text(
+                badge == "1" ? "Penjual" : "Pembeli",
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.bold,

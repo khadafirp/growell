@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:growell/color/list_color.dart';
 
 class CardHeaderPembeli extends StatelessWidget {
-  const CardHeaderPembeli({Key? key}) : super(key: key);
+  String? fullname, badge;
+  CardHeaderPembeli({Key? key, this.fullname, this.badge}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class CardHeaderPembeli extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width * 0.50,
                     child: Text(
-                      "Khadafi Rohman Prihanda",
+                      fullname ?? "",
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.white
@@ -39,7 +40,7 @@ class CardHeaderPembeli extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width * 0.50,
                     child: Text(
-                      "Pembeli",
+                      badge == "1" ? "Penjual" : "Pembeli",
                       style: TextStyle(
                         fontSize: 13,
                         color: Colors.white,

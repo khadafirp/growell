@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:growell/base/routes_name.dart';
 import 'package:growell/color/list_color.dart';
+import 'package:growell/data/models/login_model.dart';
 import 'package:growell/widget/card/card_list_produk.dart';
 import 'package:growell/widget/header/card_header_balance.dart';
 
 class BerandaPenjualPage extends StatefulWidget {
-  BerandaPenjualPage({Key? key}) : super(key: key);
+  LoginEntity? entity;
+  BerandaPenjualPage({Key? key, this.entity}) : super(key: key);
 
   @override
   _BerandaPenjualPageState createState() => _BerandaPenjualPageState();
@@ -14,6 +16,12 @@ class BerandaPenjualPage extends StatefulWidget {
 class _BerandaPenjualPageState extends State<BerandaPenjualPage> {
 
   bool showListFloating = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   Widget _listFloating() {
     return AnimatedOpacity(
@@ -107,7 +115,10 @@ class _BerandaPenjualPageState extends State<BerandaPenjualPage> {
     return Scaffold(
       body: Stack(
         children: [
-          CardHeaderBalance(),
+          CardHeaderBalance(
+            fullname: widget.entity!.fullname,
+            badge: widget.entity!.userKategori.toString(),
+          ),
           Positioned(
             top: 0,
             child: Container(

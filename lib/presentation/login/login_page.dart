@@ -8,6 +8,7 @@ import 'package:growell/data/parameters/login_dto.dart';
 import 'package:growell/presentation/login/bloc/login_bloc.dart';
 import 'package:growell/presentation/login/bloc/login_event.dart';
 import 'package:growell/presentation/login/bloc/login_state.dart';
+import 'package:growell/utils/preference.dart';
 import 'package:growell/widget/button/button_base_custom.dart';
 import 'package:growell/widget/input/text_form_field_widget.dart';
 
@@ -42,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
       builder: (context, state){
         return const SizedBox();
       }, 
-      listener: (context, state){
+      listener: (context, state) async {
         if(state is SuccessLoginState){
           Fluttertoast.showToast(
             msg: "Selamat, login berhasil.",
@@ -53,18 +54,37 @@ class _LoginPageState extends State<LoginPage> {
             textColor: Colors.white,
             fontSize: 16.0
           );
+          await Preference().setValue("username", state.data!.username);
+          await Preference().setValue("password", state.data!.password);
           Future.delayed(const Duration(seconds: 2), (){
-            Navigator.of(context).pushNamedAndRemoveUntil(RoutesName.landingPage, (route) => false);
+            Navigator.of(context).pushNamedAndRemoveUntil(RoutesName.landingPage, (route) => false, arguments: state.data!);
           });
         }
       }
     );
   }
 
+  loginValidation() async {
+    var username = await Preference().getStringValue("username");
+    var password = await Preference().getStringValue("password");
+
+    if(username.isNotEmpty){
+      loginBloc!.add(
+        MasukEvent(
+          params: LoginDTO(
+            username: username,
+            password: password
+          )
+        )
+      );
+    }
+  }
+
   @override
   void initState() { 
     super.initState();
     loginBloc = BlocProvider.of<LoginBloc>(context);
+    loginValidation();
   }
 
   @override

@@ -28,7 +28,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     emit(
       response.fold(
         (l) => SuccessLoginState(
-          data: l
+          data: l.entity
         ), 
         (r) => ErrorLoginState(
           message: r.errorData.errorMessage
