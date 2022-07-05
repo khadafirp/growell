@@ -17,8 +17,8 @@ abstract class UserDatasources {
 }
 
 class UserDatasourcesImpl extends BaseService implements UserDatasources {
-  String addUserUrl = "/register";
-  String loginUrl = "/login";
+  String addUserUrl = "/user/register";
+  String loginUrl = "/user/login";
 
   @override
   Future<Either<AddUserModel, Error>> addUser(AddUserDTO params) async {

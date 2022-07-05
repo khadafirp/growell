@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:growell/base/module/base_modul.dart';
+import 'package:growell/presentation/landing_page/penjual/produk/bloc/add_produk_bloc.dart';
 import 'package:growell/presentation/login/bloc/login_bloc.dart';
 import 'package:growell/presentation/regis/bloc/regis_bloc.dart';
 
@@ -10,6 +11,9 @@ class AppBloc{
     ),
     BlocProvider<RegisBloc>(
       create: (context) => injector.get<RegisBloc>(),
+    ),
+    BlocProvider<AddProdukBloc>(
+      create: (context) => injector.get<AddProdukBloc>(),
     )
   ];
 }
