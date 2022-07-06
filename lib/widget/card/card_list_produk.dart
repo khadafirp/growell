@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:growell/color/list_color.dart';
+import 'package:growell/data/models/list_produk_penjual_model.dart';
 
 class CardListProduk extends StatelessWidget {
-  const CardListProduk({Key? key}) : super(key: key);
+  ProdukPenjualEntity? entity;
+  CardListProduk({Key? key, this.entity}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +46,7 @@ class CardListProduk extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
-                        "Scarlett Pemutih",
+                        entity!.nama_produk!,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontSize: 11,
@@ -53,7 +55,7 @@ class CardListProduk extends StatelessWidget {
                         )
                       ),
                       Text(
-                        "Rp 50.000",
+                        entity!.harga_produk!,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontSize: 11,
@@ -71,7 +73,7 @@ class CardListProduk extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
-                        "Scarlett Pemutih yang bisa memutihkan kulit cerah dan wangi",
+                        entity!.detail_produk!,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(

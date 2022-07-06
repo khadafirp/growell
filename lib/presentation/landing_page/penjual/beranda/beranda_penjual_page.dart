@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:growell/base/routes_name.dart';
 import 'package:growell/color/list_color.dart';
+import 'package:growell/data/models/list_produk_penjual_model.dart';
 import 'package:growell/data/models/login_model.dart';
+import 'package:growell/presentation/landing_page/penjual/beranda/bloc/beranda_penjual_bloc.dart';
+import 'package:growell/presentation/landing_page/penjual/beranda/bloc/beranda_penjual_event.dart';
+import 'package:growell/presentation/landing_page/penjual/beranda/bloc/beranda_penjual_state.dart';
 import 'package:growell/widget/card/card_list_produk.dart';
 import 'package:growell/widget/header/card_header_balance.dart';
 
@@ -16,11 +21,104 @@ class BerandaPenjualPage extends StatefulWidget {
 class _BerandaPenjualPageState extends State<BerandaPenjualPage> {
 
   bool showListFloating = false;
+  BerandaPenjualBloc? _berandaPenjualBloc;
+  List<ProdukPenjualEntity>? listProduk;
+  bool isLoading = false;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    _berandaPenjualBloc = BlocProvider.of<BerandaPenjualBloc>(context);
+    Future.delayed(const Duration(milliseconds: 100), (){
+      _berandaPenjualBloc!.add(
+        GetListProdukPenjualEvent(
+          idUser: widget.entity!.idUser
+        )
+      );
+    });
+  }
+
+  getListProduk(){
+    return BlocConsumer<BerandaPenjualBloc, BerandaPenjualState>(
+      bloc: _berandaPenjualBloc,
+      builder: (context, state){
+        if(state is LoadingGetListProdukBerandaPenjualState){
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if(state is SuccessGetListProdukBerandaPenjualState){
+          return Container(
+            height: MediaQuery.of(context).size.height * 0.95,
+            padding: EdgeInsets.only(bottom: 250),
+            child: GridView.builder(
+              padding: const EdgeInsets.only(bottom: 16, top: 40),
+              shrinkWrap: true,
+              itemCount: state.entity!.entity!.length,
+              gridDelegate:
+                  const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2),
+              itemBuilder: (BuildContext context, int index) {
+                print("data = " + state.entity!.entity![index].detail_produk.toString());
+                // return const SizedBox();
+                return CardListProduk(
+                  entity: ProdukPenjualEntity(
+                    id_produk: state.entity!.entity![index].id_produk,
+                    nama_produk: state.entity!.entity![index].nama_produk,
+                    detail_produk: state.entity!.entity![index].detail_produk,
+                    harga_produk: state.entity!.entity![index].harga_produk,
+                    id_kategori: state.entity!.entity![index].id_kategori,
+                    id_user: state.entity!.entity![index].id_user,
+                    kode_barcode: state.entity!.entity![index].kode_barcode,
+                    path: state.entity!.entity![index].path,
+                    size: state.entity!.entity![index].size,
+                    stok: state.entity!.entity![index].stok,
+                    created_at: state.entity!.entity![index].created_at,
+                    updated_at: state.entity!.entity![index].updated_at,
+                  ),
+                );
+              },
+            ),
+          );
+        }
+        return const SizedBox();
+      }, 
+      listener: (context, state){
+        // if(state is LoadingGetListProdukBerandaPenjualState){
+        //   setState(() {
+        //     isLoading = true;
+        //   });
+        // }
+        // if(state is SuccessGetListProdukBerandaPenjualState){
+        //   state.entity!.entity!.forEach((element) {
+        //     listProduk!.add(
+        //       ProdukPenjualEntity(
+        //         id_produk: element.id_produk,
+        //         nama_produk: element.nama_produk,
+        //         stok: element.stok,
+        //         id_kategori: element.id_kategori,
+        //         kode_barcode: element.kode_barcode,
+        //         id_user: element.id_user,
+        //         path: element.path,
+        //         size: element.size,
+        //         created_at: element.created_at,
+        //         updated_at: element.updated_at,
+        //       )
+        //     );
+        //   });
+        //   setState(() {
+        //     isLoading = false;
+        //   });
+        // }
+        // if(state is ErrorGetListProdukBerandaPenjualState){
+        //   setState(() {
+        //     isLoading = false;
+        //   });
+        // }
+      }
+    );
   }
 
   Widget _listFloating() {
@@ -130,20 +228,10 @@ class _BerandaPenjualPageState extends State<BerandaPenjualPage> {
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))
               ),
               child: SingleChildScrollView(
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.95,
-                  padding: EdgeInsets.only(bottom: 250),
-                  child: GridView.builder(
-                    padding: const EdgeInsets.only(bottom: 16, top: 40),
-                    shrinkWrap: true,
-                    itemCount: 20,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2),
-                    itemBuilder: (BuildContext context, int index) {
-                      return CardListProduk();
-                    },
-                  ),
+                child: Column(
+                  children: [
+                    getListProduk()
+                  ],
                 ),
               ),
             ),

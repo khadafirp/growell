@@ -17,14 +17,16 @@ class AddProdukModel {
         size: json['size'],
         stok: json['stok'],
         created_at: json['created_at'],
-        updated_at: json['updated_at']
+        updated_at: json['updated_at'],
+        harga_produk: json['harga_produk'],
+        detail_produk: json['detail_produk']
       )
     );
   }
 }
 
 class AddProdukEntity {
-  String? message, id_produk, nama_produk, id_kategori, kode_barcode, id_user, path, size, created_at, updated_at;
+  String? message, id_produk, harga_produk, detail_produk, nama_produk, id_kategori, kode_barcode, id_user, path, size, created_at, updated_at;
   int? statusCode, stok;
   AddProdukEntity(
     {
@@ -39,7 +41,9 @@ class AddProdukEntity {
       this.size,
       this.stok,
       this.created_at,
-      this.updated_at
+      this.updated_at,
+      this.harga_produk,
+      this.detail_produk
     }
   );
 }

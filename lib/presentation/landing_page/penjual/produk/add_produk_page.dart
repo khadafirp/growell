@@ -112,7 +112,9 @@ class _AddProdukPageState extends State<AddProdukPage> {
           id_user: idUser,
           path: path,
           size: "",
-          kode_barcode: Uuid().v4()
+          kode_barcode: Uuid().v4(),
+          harga_produk: hargaProdukController.text,
+          detail_produk: detailProdukController.text
         )
       )
     );
