@@ -8,4 +8,5 @@ class RoutesName{
   static const String landingPage = "/landing-page";
   static const String listTokoPage = "/landing-page/list-toko";
   static const String addProdukPage = "/landing-page/add-produk";
+  static const String listProdukPage = "/landing-page/list-produk";
 }

@@ -83,6 +83,16 @@ class _BerandaPenjualPageState extends State<BerandaPenjualPage> {
             ),
           );
         }
+        if(state is ErrorGetListProdukBerandaPenjualState){
+          return Container(
+            margin: EdgeInsets.only(top: 70),
+            child: Center(
+              child: Text(
+                "Maaf,belum ada produk"
+              ),
+            ),
+          );
+        }
         return const SizedBox();
       }, 
       listener: (context, state){
@@ -168,7 +178,7 @@ class _BerandaPenjualPageState extends State<BerandaPenjualPage> {
             ),
             InkWell(
               onTap: () {
-                Navigator.of(context).pushNamed(RoutesName.addProdukPage);
+                Navigator.of(context).pushNamed(RoutesName.listProdukPage);
               },
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.45,
