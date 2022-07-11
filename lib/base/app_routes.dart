@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:growell/base/routes_name.dart';
 import 'package:growell/data/models/login_model.dart';
+import 'package:growell/data/parameters/filter_edit_produk_dto.dart';
 import 'package:growell/presentation/first_page.dart';
 import 'package:growell/presentation/landing_page/landing_page.dart';
 import 'package:growell/presentation/landing_page/pembeli/list_toko/list_toko_page.dart';
@@ -22,10 +23,12 @@ class AppRoutes{
     },
     RoutesName.loginPage: (context) => LoginPage(),
     RoutesName.regisPage: (context) => RegisPage(),
-    RoutesName.landingPage: (context) => LandingPage(entity: settings.arguments as LoginEntity,),
+    RoutesName.landingPage: (context) => LandingPage(),
     RoutesName.listTokoPage: (context) => ListTokoPage(),
-    RoutesName.addProdukPage: (context) => AddProdukPage(),
-    RoutesName.listProdukPage: (context) => LIstProdukPage()
+    RoutesName.addProdukPage: (context) => AddProdukPage(
+      params: settings.arguments as FilterEditProdukDTO,
+    ),
+    RoutesName.listProdukPage: (context) => ListProdukPage()
   };
 
   static Route<dynamic> getGenerateRoutes(RouteSettings settings) {

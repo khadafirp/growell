@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:growell/base/routes_name.dart';
 import 'package:growell/color/list_color.dart';
 import 'package:growell/data/parameters/add_produk_dto.dart';
+import 'package:growell/data/parameters/filter_edit_produk_dto.dart';
 import 'package:growell/presentation/landing_page/penjual/produk/bloc/add_produk_bloc.dart';
 import 'package:growell/presentation/landing_page/penjual/produk/bloc/add_produk_event.dart';
 import 'package:growell/presentation/landing_page/penjual/produk/bloc/add_produk_state.dart';
@@ -17,7 +18,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
 class AddProdukPage extends StatefulWidget {
-  AddProdukPage({Key? key}) : super(key: key);
+  FilterEditProdukDTO? params;
+  AddProdukPage({Key? key, this.params}) : super(key: key);
 
   @override
   _AddProdukPageState createState() => _AddProdukPageState();
@@ -39,6 +41,14 @@ class _AddProdukPageState extends State<AddProdukPage> {
     // TODO: implement initState
     super.initState();
     addProdukBloc = BlocProvider.of<AddProdukBloc>(context);
+
+    setState(() {
+      namaProdukController.text = widget.params!.entity == null ? "" : widget.params!.entity!.nama_produk!;
+      detailProdukController.text = widget.params!.entity != null ? widget.params!.entity!.detail_produk! : "";
+      hargaProdukController.text = widget.params!.entity != null ? widget.params!.entity!.harga_produk! : "";
+      stokProdukController.text = widget.params!.entity != null ? widget.params!.entity!.stok!.toString() : "";
+      path = widget.params!.entity != null ? "" : "";
+    });
   }
 
 
@@ -102,22 +112,41 @@ class _AddProdukPageState extends State<AddProdukPage> {
     var userKategori = await Preference().getStringValue("id_kategori");
     var idUser = await Preference().getStringValue("id_user");
 
-    addProdukBloc!.add(
-      TambahProdukEvent(
-        params: AddProdukDTO(
-          id_produk: Uuid().v4(),
-          nama_produk: namaProdukController.text,
-          stok: int.parse(stokProdukController.text),
-          id_kategori: userKategori,
-          id_user: idUser,
-          path: path,
-          size: "",
-          kode_barcode: Uuid().v4(),
-          harga_produk: hargaProdukController.text,
-          detail_produk: detailProdukController.text
+    if(widget.params!.filter == "edit"){
+      addProdukBloc!.add(
+        EditProdukEvent(
+          params: AddProdukDTO(
+            id_produk: widget.params!.entity!.id_produk,
+            nama_produk: namaProdukController.text,
+            stok: int.parse(stokProdukController.text),
+            id_kategori: userKategori,
+            id_user: idUser,
+            path: path,
+            size: "",
+            kode_barcode: Uuid().v4(),
+            harga_produk: hargaProdukController.text,
+            detail_produk: detailProdukController.text
+          )
         )
-      )
-    );
+      );
+    } else {
+      addProdukBloc!.add(
+        TambahProdukEvent(
+          params: AddProdukDTO(
+            id_produk: Uuid().v4(),
+            nama_produk: namaProdukController.text,
+            stok: int.parse(stokProdukController.text),
+            id_kategori: userKategori,
+            id_user: idUser,
+            path: path,
+            size: "",
+            kode_barcode: Uuid().v4(),
+            harga_produk: hargaProdukController.text,
+            detail_produk: detailProdukController.text
+          )
+        )
+      );
+    }
   }
   
   listener(){
@@ -148,11 +177,48 @@ class _AddProdukPageState extends State<AddProdukPage> {
             textColor: Colors.white,
             fontSize: 16.0
           );
-          // Future.delayed(const Duration(seconds: 1), (){
-          //   Navigator.of(context).pushNamedAndRemoveUntil(RoutesName.landingPage, (route) => false);
-          // });
+          Future.delayed(const Duration(seconds: 1), (){
+            Navigator.of(context).pushNamedAndRemoveUntil(RoutesName.landingPage, (route) => false);
+          });
         }
         if(state is ErrorAddProdukState){
+          Fluttertoast.showToast(
+            msg: state.message,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: ListColor().baseColor,
+            textColor: Colors.white,
+            fontSize: 16.0
+          );
+        }
+
+        if(state is LoadingEditProdukState){
+          showDialog(
+            context: context, 
+            builder: (_){
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          );
+        }
+        if(state is SuccessEditProdukState){
+          Navigator.of(context).pop();
+          Fluttertoast.showToast(
+            msg: "Produk berhasil disimpan.",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: ListColor().baseColor,
+            textColor: Colors.white,
+            fontSize: 16.0
+          );
+          Future.delayed(const Duration(seconds: 1), (){
+            Navigator.of(context).pushNamedAndRemoveUntil(RoutesName.landingPage, (route) => false);
+          });
+        }
+        if(state is ErrorEditProdukState){
           Fluttertoast.showToast(
             msg: state.message,
             toastLength: Toast.LENGTH_LONG,
@@ -170,7 +236,7 @@ class _AddProdukPageState extends State<AddProdukPage> {
   @override
   Widget build(BuildContext context) {
     return CustomChildPage(
-      title: "Tambah Produk",
+      title: widget.params!.filter == "tambah" ? "Tambah Produk" : "Edit Produk",
       child: Form(
         key: _formKey,
         child: Column(

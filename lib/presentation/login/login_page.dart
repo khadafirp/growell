@@ -57,6 +57,7 @@ class _LoginPageState extends State<LoginPage> {
           await Preference().setValue("username", state.data!.username);
           await Preference().setValue("password", state.data!.password);
           await Preference().setValue("id_user", state.data!.idUser);
+          await Preference().setValue("fullname", state.data!.fullname);
           await Preference().setValue("id_kategori", state.data!.userKategori.toString());
           Future.delayed(const Duration(seconds: 2), (){
             Navigator.of(context).pushNamedAndRemoveUntil(RoutesName.landingPage, (route) => false, arguments: state.data!);

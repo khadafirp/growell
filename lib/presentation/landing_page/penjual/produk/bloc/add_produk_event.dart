@@ -1,4 +1,5 @@
 import 'package:growell/data/parameters/add_produk_dto.dart';
+import 'package:growell/presentation/landing_page/penjual/beranda/bloc/beranda_penjual_event.dart';
 
 class AddProdukEvent {
   AddProdukEvent();
@@ -15,4 +16,14 @@ class TambahProdukEvent extends AddProdukEvent {
 class ThrowErrorAddProdukEvent extends AddProdukEvent{
   Object? error;
   ThrowErrorAddProdukEvent(this.error);
+}
+
+class GetListProdukPenjualEvent extends AddProdukEvent {
+  String? params;
+  GetListProdukPenjualEvent({this.params});
+}
+
+class EditProdukEvent extends AddProdukEvent{
+  AddProdukDTO? params;
+  EditProdukEvent({this.params});
 }

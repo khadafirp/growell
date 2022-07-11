@@ -3,10 +3,10 @@ import 'package:growell/color/list_color.dart';
 import 'package:growell/data/models/login_model.dart';
 import 'package:growell/presentation/landing_page/pembeli/beranda/beranda_pembeli_page.dart';
 import 'package:growell/presentation/landing_page/penjual/beranda/beranda_penjual_page.dart';
+import 'package:growell/utils/preference.dart';
 
 class LandingPage extends StatefulWidget {
-  LoginEntity? entity;
-  LandingPage({Key? key, this.entity}) : super(key: key);
+  LandingPage({Key? key}) : super(key: key);
 
   @override
   _LandingPageState createState() => _LandingPageState();
@@ -17,6 +17,8 @@ class _LandingPageState extends State<LandingPage> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  String idUser = "";
+  String idKategori = "";
   List<Widget> _widgetPenjual = [
     BerandaPenjualPage(),
     Text(
@@ -47,15 +49,30 @@ class _LandingPageState extends State<LandingPage> {
     });
   }
 
+  retrieveLocalStorage() async {
+    var id_user = await Preference().getStringValue("id_user");
+    var id_kategori = await Preference().getStringValue("id_kategori");
+
+    setState(() {
+      idUser = id_user;
+      idKategori = id_kategori;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    retrieveLocalStorage();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: widget.entity!.userKategori.toString() == "1" ?
+        child: idKategori == "1" ?
         [
-          BerandaPenjualPage(
-            entity: widget.entity!,
-          ),
+          BerandaPenjualPage(),
           Text(
             'Index 1: Business',
             style: optionStyle,
@@ -67,9 +84,7 @@ class _LandingPageState extends State<LandingPage> {
         ].elementAt(_selectedIndex)
         :
         [
-          BerandaPembeliPage(
-            entity: widget.entity!,
-          ),
+          BerandaPembeliPage(),
           Text(
             'Index 1: Business',
             style: optionStyle,

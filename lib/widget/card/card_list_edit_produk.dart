@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:growell/base/routes_name.dart';
 import 'package:growell/color/list_color.dart';
+import 'package:growell/data/models/list_produk_penjual_model.dart';
+import 'package:growell/data/parameters/filter_edit_produk_dto.dart';
 
 class CardListEditProduk extends StatelessWidget {
-  CardListEditProduk({Key? key}) : super(key: key);
+  ProdukPenjualEntity? entity;
+  CardListEditProduk({Key? key, this.entity}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +35,7 @@ class CardListEditProduk extends StatelessWidget {
             Container(
               width: MediaQuery.of(context).size.width * 0.40,
               child: Text(
-                "Nama Produk",
+                entity!.nama_produk!,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   fontSize: 13,
@@ -56,16 +60,37 @@ class CardListEditProduk extends StatelessWidget {
                       color: Colors.white,
                     ),
                   ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.09,
-                    height: MediaQuery.of(context).size.height * 0.04,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(25)),
-                      color: Colors.blue,
-                    ),
-                    child: Icon(
-                      Icons.edit,
-                      color: Colors.white,
+                  InkWell(
+                    onTap: (){
+                      Navigator.of(context).pushNamed(RoutesName.addProdukPage, arguments: FilterEditProdukDTO(
+                        filter: "edit",
+                        entity: ProdukPenjualEntity(
+                          created_at: entity!.created_at,
+                          detail_produk: entity!.detail_produk,
+                          harga_produk: entity!.harga_produk,
+                          id_kategori: entity!.id_kategori,
+                          id_produk: entity!.id_produk,
+                          id_user: entity!.id_user,
+                          kode_barcode: entity!.kode_barcode,
+                          nama_produk: entity!.nama_produk,
+                          path: entity!.path,
+                          size: entity!.size,
+                          stok: entity!.stok,
+                          updated_at: entity!.updated_at
+                        )
+                      ));
+                    },
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.09,
+                      height: MediaQuery.of(context).size.height * 0.04,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(25)),
+                        color: Colors.blue,
+                      ),
+                      child: Icon(
+                        Icons.edit,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ],

@@ -4,15 +4,16 @@ import 'package:growell/base/routes_name.dart';
 import 'package:growell/color/list_color.dart';
 import 'package:growell/data/models/list_produk_penjual_model.dart';
 import 'package:growell/data/models/login_model.dart';
+import 'package:growell/data/parameters/filter_edit_produk_dto.dart';
 import 'package:growell/presentation/landing_page/penjual/beranda/bloc/beranda_penjual_bloc.dart';
 import 'package:growell/presentation/landing_page/penjual/beranda/bloc/beranda_penjual_event.dart';
 import 'package:growell/presentation/landing_page/penjual/beranda/bloc/beranda_penjual_state.dart';
+import 'package:growell/utils/preference.dart';
 import 'package:growell/widget/card/card_list_produk.dart';
 import 'package:growell/widget/header/card_header_balance.dart';
 
 class BerandaPenjualPage extends StatefulWidget {
-  LoginEntity? entity;
-  BerandaPenjualPage({Key? key, this.entity}) : super(key: key);
+  BerandaPenjualPage({Key? key}) : super(key: key);
 
   @override
   _BerandaPenjualPageState createState() => _BerandaPenjualPageState();
@@ -24,6 +25,27 @@ class _BerandaPenjualPageState extends State<BerandaPenjualPage> {
   BerandaPenjualBloc? _berandaPenjualBloc;
   List<ProdukPenjualEntity>? listProduk;
   bool isLoading = false;
+  String? idUser, idKategori, fullname;
+
+  retrieveLocalStorage() async {
+    var id_user = await Preference().getStringValue("id_user");
+    var id_kategori = await Preference().getStringValue("id_kategori");
+    var nama_lengkap = await Preference().getStringValue("fullname");
+
+    setState(() {
+      idUser = id_user;
+      idKategori = id_kategori;
+      fullname = nama_lengkap;
+    });
+
+    Future.delayed(const Duration(milliseconds: 100), (){
+      _berandaPenjualBloc!.add(
+        GetListProdukPenjualEvent(
+          idUser: idUser!
+        )
+      );
+    });
+  }
 
   @override
   void initState() {
@@ -31,13 +53,7 @@ class _BerandaPenjualPageState extends State<BerandaPenjualPage> {
     super.initState();
 
     _berandaPenjualBloc = BlocProvider.of<BerandaPenjualBloc>(context);
-    Future.delayed(const Duration(milliseconds: 100), (){
-      _berandaPenjualBloc!.add(
-        GetListProdukPenjualEvent(
-          idUser: widget.entity!.idUser
-        )
-      );
-    });
+    retrieveLocalStorage();
   }
 
   getListProduk(){
@@ -142,7 +158,9 @@ class _BerandaPenjualPageState extends State<BerandaPenjualPage> {
           children: [
             InkWell(
               onTap: () {
-                Navigator.of(context).pushNamed(RoutesName.addProdukPage);
+                Navigator.of(context).pushNamed(RoutesName.addProdukPage, arguments: FilterEditProdukDTO(
+                  filter: "tambah"
+                ));
               },
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.45,
@@ -224,8 +242,8 @@ class _BerandaPenjualPageState extends State<BerandaPenjualPage> {
       body: Stack(
         children: [
           CardHeaderBalance(
-            fullname: widget.entity!.fullname,
-            badge: widget.entity!.userKategori.toString(),
+            fullname: fullname,
+            badge: idKategori,
           ),
           Positioned(
             top: 0,

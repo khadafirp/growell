@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:growell/base/routes_name.dart';
 import 'package:growell/data/models/login_model.dart';
+import 'package:growell/utils/preference.dart';
 import 'package:growell/widget/header/card_header_pembeli.dart';
 
 class BerandaPembeliPage extends StatefulWidget {
-  LoginEntity? entity;
-  BerandaPembeliPage({Key? key, this.entity}) : super(key: key);
+  BerandaPembeliPage({Key? key}) : super(key: key);
 
   @override
   _BerandaPembeliPageState createState() => _BerandaPembeliPageState();
@@ -13,10 +13,25 @@ class BerandaPembeliPage extends StatefulWidget {
 
 class _BerandaPembeliPageState extends State<BerandaPembeliPage> {
 
+  String? idUser, idKategori, fullname;
+
+  retrieveLocalStorage() async {
+    var id_user = await Preference().getStringValue("id_user");
+    var id_kategori = await Preference().getStringValue("id_kategori");
+    var nama_lengkap = await Preference().getStringValue("fullname");
+
+    setState(() {
+      idUser = id_user;
+      idKategori = id_kategori;
+      fullname = nama_lengkap;
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    retrieveLocalStorage();
   }
 
   @override
@@ -29,8 +44,8 @@ class _BerandaPembeliPageState extends State<BerandaPembeliPage> {
         child: Column(
           children: [
             CardHeaderPembeli(
-              fullname: widget.entity!.fullname,
-              badge: widget.entity!.userKategori.toString(),
+              fullname: fullname,
+              badge: idKategori,
             ),
             InkWell(
               onTap: () => Navigator.of(context).pushNamed(RoutesName.listTokoPage),

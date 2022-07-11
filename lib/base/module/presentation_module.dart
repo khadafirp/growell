@@ -8,6 +8,6 @@ import 'package:growell/utils/preference.dart';
 void presentationModule() {
   injector.registerLazySingleton(() => RegisBloc(injector()));
   injector.registerLazySingleton(() => LoginBloc(injector()));
-  injector.registerLazySingleton(() => AddProdukBloc(injector()));
+  injector.registerLazySingleton(() => AddProdukBloc(injector(), injector(), injector()));
   injector.registerLazySingleton(() => BerandaPenjualBloc(injector()));
 }
