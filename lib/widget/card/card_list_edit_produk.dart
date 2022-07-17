@@ -6,7 +6,8 @@ import 'package:growell/data/parameters/filter_edit_produk_dto.dart';
 
 class CardListEditProduk extends StatelessWidget {
   ProdukPenjualEntity? entity;
-  CardListEditProduk({Key? key, this.entity}) : super(key: key);
+  String? idKategoriUser;
+  CardListEditProduk({Key? key, this.entity, this.idKategoriUser}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +44,9 @@ class CardListEditProduk extends StatelessWidget {
                 ),
               ),
             ),
+            idKategoriUser == "2" ?
+            const SizedBox()
+            :
             Container(
               width: MediaQuery.of(context).size.width * 0.25,
               child: Row(

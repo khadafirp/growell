@@ -9,4 +9,5 @@ class RoutesName{
   static const String listTokoPage = "/landing-page/list-toko";
   static const String addProdukPage = "/landing-page/add-produk";
   static const String listProdukPage = "/landing-page/list-produk";
+  static const String listProdukTokoPage = "landing-page/list-toko/list-produk";
 }
