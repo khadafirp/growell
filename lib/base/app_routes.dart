@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:growell/base/routes_name.dart';
+import 'package:growell/data/models/list_produk_penjual_model.dart';
 import 'package:growell/data/models/login_model.dart';
 import 'package:growell/data/parameters/filter_edit_produk_dto.dart';
 import 'package:growell/presentation/first_page.dart';
 import 'package:growell/presentation/landing_page/landing_page.dart';
+import 'package:growell/presentation/landing_page/pembeli/list_toko/detail_produk_pembeli.dart';
 import 'package:growell/presentation/landing_page/pembeli/list_toko/list_produk_toko.dart';
 import 'package:growell/presentation/landing_page/pembeli/list_toko/list_toko_page.dart';
 import 'package:growell/presentation/landing_page/penjual/produk/add_produk_page.dart';
@@ -32,6 +34,9 @@ class AppRoutes{
     RoutesName.listProdukPage: (context) => ListProdukPage(),
     RoutesName.listProdukTokoPage: (context) => ListProdukToko(
       id_user: settings.arguments as String,
+    ),
+    RoutesName.detailProdukPembeli: (context) => DetailProdukPembeli(
+      entity: settings.arguments as ProdukPenjualEntity,
     )
   };
 
@@ -66,6 +71,10 @@ class AppRoutes{
         final WidgetBuilder? builder = routes[settings.name];
         return MaterialPageRoute(builder: builder!, settings: settings);
       case RoutesName.listProdukTokoPage:
+        final routes = getRoutesWithSettings(settings);
+        final WidgetBuilder? builder = routes[settings.name];
+        return MaterialPageRoute(builder: builder!, settings: settings);
+      case RoutesName.detailProdukPembeli:
         final routes = getRoutesWithSettings(settings);
         final WidgetBuilder? builder = routes[settings.name];
         return MaterialPageRoute(builder: builder!, settings: settings);

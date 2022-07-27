@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:growell/color/list_color.dart';
 import 'package:growell/data/models/list_produk_penjual_model.dart';
+import 'package:growell/utils/currency_formatter.dart';
 
 class CardListProduk extends StatelessWidget {
   ProdukPenjualEntity? entity;
@@ -27,8 +28,8 @@ class CardListProduk extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-            child: Image.asset(
-              'assets/jpg/scarlett.jpeg',
+            child: Image.network(
+              entity!.path!,
               fit: BoxFit.cover,
               height: 100,
               width: MediaQuery.of(context).size.width,
@@ -55,7 +56,7 @@ class CardListProduk extends StatelessWidget {
                         )
                       ),
                       Text(
-                        entity!.harga_produk!,
+                        CurrencyFormatter.formatWithoutDecimal(double.parse(entity!.harga_produk!)),
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontSize: 11,

@@ -58,6 +58,7 @@ class _BerandaPembeliPageState extends State<BerandaPembeliPage> {
                     Container(
                       width: MediaQuery.of(context).size.width * 0.25,
                       height: MediaQuery.of(context).size.height * 0.12,
+                      padding: EdgeInsets.only(top: 8, left: 8, right: 8),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -73,7 +74,7 @@ class _BerandaPembeliPageState extends State<BerandaPembeliPage> {
                       child: ClipRRect(
                         borderRadius: const BorderRadius.all(Radius.circular(10)),
                         child: Image.asset(
-                          "assets/jpg/scarlett.jpeg",
+                          "assets/png/buyer.png",
                           fit: BoxFit.cover,
                         ),
                       ),

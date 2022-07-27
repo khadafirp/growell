@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:growell/base/routes_name.dart';
 import 'package:growell/data/models/list_produk_penjual_model.dart';
 import 'package:growell/presentation/landing_page/penjual/produk/bloc/add_produk_bloc.dart';
 import 'package:growell/presentation/landing_page/penjual/produk/bloc/add_produk_event.dart';
@@ -115,21 +116,42 @@ class _ListProdukTokoState extends State<ListProdukToko> {
               shrinkWrap: true,
               itemCount: dataProduk!.length,
               itemBuilder: (BuildContext context, int index) {
-                return CardListEditProduk(
-                  idKategoriUser: idKategoriUser,
-                  entity: ProdukPenjualEntity(
-                    created_at: dataProduk![index].created_at,
-                    detail_produk: dataProduk![index].detail_produk,
-                    harga_produk: dataProduk![index].harga_produk,
-                    id_kategori: dataProduk![index].id_kategori,
-                    id_produk: dataProduk![index].id_produk,
-                    id_user: dataProduk![index].id_user,
-                    kode_barcode: dataProduk![index].kode_barcode,
-                    nama_produk: dataProduk![index].nama_produk,
-                    path: dataProduk![index].path,
-                    size: dataProduk![index].size,
-                    stok: dataProduk![index].stok,
-                    updated_at: dataProduk![index].updated_at
+                return InkWell(
+                  onTap: (){
+                    Navigator.of(context).pushNamed(
+                      RoutesName.detailProdukPembeli, 
+                      arguments: ProdukPenjualEntity(
+                        created_at: dataProduk![index].created_at,
+                        detail_produk: dataProduk![index].detail_produk,
+                        harga_produk: dataProduk![index].harga_produk,
+                        id_kategori: dataProduk![index].id_kategori,
+                        id_produk: dataProduk![index].id_produk,
+                        id_user: dataProduk![index].id_user,
+                        kode_barcode: dataProduk![index].kode_barcode,
+                        nama_produk: dataProduk![index].nama_produk,
+                        path: dataProduk![index].path,
+                        size: dataProduk![index].size,
+                        stok: dataProduk![index].stok,
+                        updated_at: dataProduk![index].updated_at
+                      ),
+                    );
+                  },
+                  child: CardListEditProduk(
+                    idKategoriUser: idKategoriUser,
+                    entity: ProdukPenjualEntity(
+                      created_at: dataProduk![index].created_at,
+                      detail_produk: dataProduk![index].detail_produk,
+                      harga_produk: dataProduk![index].harga_produk,
+                      id_kategori: dataProduk![index].id_kategori,
+                      id_produk: dataProduk![index].id_produk,
+                      id_user: dataProduk![index].id_user,
+                      kode_barcode: dataProduk![index].kode_barcode,
+                      nama_produk: dataProduk![index].nama_produk,
+                      path: dataProduk![index].path,
+                      size: dataProduk![index].size,
+                      stok: dataProduk![index].stok,
+                      updated_at: dataProduk![index].updated_at
+                    ),
                   ),
                 );
               }

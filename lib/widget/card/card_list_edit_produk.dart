@@ -3,6 +3,7 @@ import 'package:growell/base/routes_name.dart';
 import 'package:growell/color/list_color.dart';
 import 'package:growell/data/models/list_produk_penjual_model.dart';
 import 'package:growell/data/parameters/filter_edit_produk_dto.dart';
+import 'package:growell/utils/currency_formatter.dart';
 
 class CardListEditProduk extends StatelessWidget {
   ProdukPenjualEntity? entity;
@@ -26,26 +27,64 @@ class CardListEditProduk extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.all(Radius.circular(25)),
-              child: Image.asset(
-                'assets/jpg/scarlett.jpeg',
+              child: Image.network(
+                entity!.path!,
                 fit: BoxFit.cover,
                 height: MediaQuery.of(context).size.height * 0.05,
                 width: MediaQuery.of(context).size.width * 0.11,
               ),
             ),
             Container(
-              width: MediaQuery.of(context).size.width * 0.40,
-              child: Text(
-                entity!.nama_produk!,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: 13,
-                  color: Colors.black
-                ),
+              height: MediaQuery.of(context).size.height * 0.05,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.40,
+                    child: Text(
+                      entity!.nama_produk!,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.black
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.40,
+                    child: Text(
+                      CurrencyFormatter.formatWithoutDecimal(double.parse(entity!.harga_produk!)),
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.black
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
             idKategoriUser == "2" ?
-            const SizedBox()
+            Container(
+              // width: MediaQuery.of(context).size.width * 0.25,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.08,
+                    height: MediaQuery.of(context).size.height * 0.04,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(25)),
+                      color: ListColor().baseColor
+                    ),
+                    child: Icon(
+                      Icons.shopping_bag,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+            )
             :
             Container(
               width: MediaQuery.of(context).size.width * 0.25,
@@ -53,7 +92,7 @@ class CardListEditProduk extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(
-                    width: MediaQuery.of(context).size.width * 0.09,
+                    width: MediaQuery.of(context).size.width * 0.08,
                     height: MediaQuery.of(context).size.height * 0.04,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(25)),
@@ -85,7 +124,7 @@ class CardListEditProduk extends StatelessWidget {
                       ));
                     },
                     child: Container(
-                      width: MediaQuery.of(context).size.width * 0.09,
+                      width: MediaQuery.of(context).size.width * 0.08,
                       height: MediaQuery.of(context).size.height * 0.04,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(25)),
