@@ -1,6 +1,7 @@
 import 'package:growell/base/module/base_modul.dart';
 import 'package:growell/presentation/landing_page/pembeli/list_toko/bloc/list_toko_bloc.dart';
 import 'package:growell/presentation/landing_page/penjual/beranda/bloc/beranda_penjual_bloc.dart';
+import 'package:growell/presentation/landing_page/penjual/keranjang/bloc/keranjang_penjual_bloc.dart';
 import 'package:growell/presentation/landing_page/penjual/produk/bloc/add_produk_bloc.dart';
 import 'package:growell/presentation/login/bloc/login_bloc.dart';
 import 'package:growell/presentation/regis/bloc/regis_bloc.dart';
@@ -12,4 +13,5 @@ void presentationModule() {
   injector.registerLazySingleton(() => AddProdukBloc(injector(), injector(), injector()));
   injector.registerLazySingleton(() => BerandaPenjualBloc(injector()));
   injector.registerLazySingleton(() => ListTokoBloc(injector()));
+  injector.registerLazySingleton(() => KeranjangPenjualBloc(injector()));
 }

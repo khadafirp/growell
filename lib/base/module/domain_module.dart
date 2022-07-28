@@ -1,4 +1,5 @@
 import 'package:growell/base/module/base_modul.dart';
+import 'package:growell/domain/usecases/add_keranjang_produk_penjual_use_case.dart';
 import 'package:growell/domain/usecases/add_produk_use_case.dart';
 import 'package:growell/domain/usecases/add_user_use_case.dart';
 import 'package:growell/domain/usecases/edit_produk_use_case.dart';
@@ -14,4 +15,5 @@ void domainModule() {
   injector.registerLazySingleton(() => GetListProdukPenjualUseCase(injector()));
   injector.registerLazySingleton(() => EditProdukUseCase(injector()));
   injector.registerLazySingleton(() => GetListAllUserUseCase(injector()));
+  injector.registerLazySingleton(() => AddKeranjangProdukPenjualUseCase(injector()));
 }

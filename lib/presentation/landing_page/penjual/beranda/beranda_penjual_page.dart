@@ -79,20 +79,41 @@ class _BerandaPenjualPageState extends State<BerandaPenjualPage> {
               itemBuilder: (BuildContext context, int index) {
                 print("data = " + state.entity!.entity![index].detail_produk.toString());
                 // return const SizedBox();
-                return CardListProduk(
-                  entity: ProdukPenjualEntity(
-                    id_produk: state.entity!.entity![index].id_produk,
-                    nama_produk: state.entity!.entity![index].nama_produk,
-                    detail_produk: state.entity!.entity![index].detail_produk,
-                    harga_produk: state.entity!.entity![index].harga_produk,
-                    id_kategori: state.entity!.entity![index].id_kategori,
-                    id_user: state.entity!.entity![index].id_user,
-                    kode_barcode: state.entity!.entity![index].kode_barcode,
-                    path: state.entity!.entity![index].path,
-                    size: state.entity!.entity![index].size,
-                    stok: state.entity!.entity![index].stok,
-                    created_at: state.entity!.entity![index].created_at,
-                    updated_at: state.entity!.entity![index].updated_at,
+                return InkWell(
+                  onTap: (){
+                    Navigator.of(context).pushNamed(
+                      RoutesName.detailProdukPenjual, 
+                      arguments: ProdukPenjualEntity(
+                        created_at: state.entity!.entity![index].created_at,
+                        detail_produk: state.entity!.entity![index].detail_produk,
+                        harga_produk: state.entity!.entity![index].harga_produk,
+                        id_kategori: state.entity!.entity![index].id_kategori,
+                        id_produk: state.entity!.entity![index].id_produk,
+                        id_user: state.entity!.entity![index].id_user,
+                        kode_barcode: state.entity!.entity![index].kode_barcode,
+                        nama_produk: state.entity!.entity![index].nama_produk,
+                        path: state.entity!.entity![index].path,
+                        size: state.entity!.entity![index].size,
+                        stok: state.entity!.entity![index].stok,
+                        updated_at: state.entity!.entity![index].updated_at
+                      ),
+                    );
+                  },
+                  child: CardListProduk(
+                    entity: ProdukPenjualEntity(
+                      id_produk: state.entity!.entity![index].id_produk,
+                      nama_produk: state.entity!.entity![index].nama_produk,
+                      detail_produk: state.entity!.entity![index].detail_produk,
+                      harga_produk: state.entity!.entity![index].harga_produk,
+                      id_kategori: state.entity!.entity![index].id_kategori,
+                      id_user: state.entity!.entity![index].id_user,
+                      kode_barcode: state.entity!.entity![index].kode_barcode,
+                      path: state.entity!.entity![index].path,
+                      size: state.entity!.entity![index].size,
+                      stok: state.entity!.entity![index].stok,
+                      created_at: state.entity!.entity![index].created_at,
+                      updated_at: state.entity!.entity![index].updated_at,
+                    ),
                   ),
                 );
               },

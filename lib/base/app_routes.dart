@@ -8,7 +8,9 @@ import 'package:growell/presentation/landing_page/landing_page.dart';
 import 'package:growell/presentation/landing_page/pembeli/list_toko/detail_produk_pembeli.dart';
 import 'package:growell/presentation/landing_page/pembeli/list_toko/list_produk_toko.dart';
 import 'package:growell/presentation/landing_page/pembeli/list_toko/list_toko_page.dart';
+import 'package:growell/presentation/landing_page/penjual/keranjang/keranjang_produk_penjual_page.dart';
 import 'package:growell/presentation/landing_page/penjual/produk/add_produk_page.dart';
+import 'package:growell/presentation/landing_page/penjual/produk/detail_produk_penjual.dart';
 import 'package:growell/presentation/landing_page/penjual/produk/list_produk_page.dart';
 import 'package:growell/presentation/login/login_page.dart';
 import 'package:growell/presentation/regis/regis_page.dart';
@@ -37,7 +39,11 @@ class AppRoutes{
     ),
     RoutesName.detailProdukPembeli: (context) => DetailProdukPembeli(
       entity: settings.arguments as ProdukPenjualEntity,
-    )
+    ),
+    RoutesName.keranjangPenjual: (context) => KeranjangProdukPenjualPage(),
+    RoutesName.detailProdukPenjual: (context) => DetailProdukPenjual(
+      entity: settings.arguments as ProdukPenjualEntity,
+    ),
   };
 
   static Route<dynamic> getGenerateRoutes(RouteSettings settings) {
@@ -75,6 +81,14 @@ class AppRoutes{
         final WidgetBuilder? builder = routes[settings.name];
         return MaterialPageRoute(builder: builder!, settings: settings);
       case RoutesName.detailProdukPembeli:
+        final routes = getRoutesWithSettings(settings);
+        final WidgetBuilder? builder = routes[settings.name];
+        return MaterialPageRoute(builder: builder!, settings: settings);
+      case RoutesName.keranjangPenjual:
+        final routes = getRoutesWithSettings(settings);
+        final WidgetBuilder? builder = routes[settings.name];
+        return MaterialPageRoute(builder: builder!, settings: settings);
+      case RoutesName.detailProdukPenjual:
         final routes = getRoutesWithSettings(settings);
         final WidgetBuilder? builder = routes[settings.name];
         return MaterialPageRoute(builder: builder!, settings: settings);
