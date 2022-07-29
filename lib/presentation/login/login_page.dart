@@ -54,6 +54,9 @@ class _LoginPageState extends State<LoginPage> {
             textColor: Colors.white,
             fontSize: 16.0
           );
+          if(state.data!.namaToko!.isNotEmpty || state.data!.namaToko != null){
+            await Preference().setValue("nama_toko", state.data!.namaToko);
+          }
           await Preference().setValue("username", state.data!.username);
           await Preference().setValue("password", state.data!.password);
           await Preference().setValue("id_user", state.data!.idUser);

@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:growell/domain/usecases/get_list_keranjang_produk_penjual_use_case.dart';
 import 'package:growell/domain/usecases/get_list_produk_penjual_use_case.dart';
 import 'package:growell/presentation/landing_page/penjual/beranda/bloc/beranda_penjual_event.dart';
 import 'package:growell/presentation/landing_page/penjual/beranda/bloc/beranda_penjual_state.dart';
@@ -8,7 +9,7 @@ class BerandaPenjualBloc extends Bloc<BerandaPenjualEvent, BerandaPenjualState>{
   final GetListProdukPenjualUseCase getListProdukPenjualUseCase;
 
   BerandaPenjualBloc(
-    this.getListProdukPenjualUseCase
+    this.getListProdukPenjualUseCase,
   ) : super(InitialBerandaPenjualState()){
     on<GetListProdukPenjualEvent>(getListProdukPenjual);
   }

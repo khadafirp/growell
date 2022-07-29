@@ -2,7 +2,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:growell/domain/usecases/add_keranjang_produk_penjual_use_case.dart';
 import 'package:growell/domain/usecases/add_produk_use_case.dart';
 import 'package:growell/domain/usecases/edit_produk_use_case.dart';
+import 'package:growell/domain/usecases/get_list_keranjang_produk_penjual_use_case.dart';
 import 'package:growell/domain/usecases/get_list_produk_penjual_use_case.dart';
+import 'package:growell/presentation/landing_page/penjual/beranda/bloc/beranda_penjual_event.dart';
+import 'package:growell/presentation/landing_page/penjual/beranda/bloc/beranda_penjual_state.dart';
 import 'package:growell/presentation/landing_page/penjual/keranjang/bloc/keranjang_penjual_event.dart';
 import 'package:growell/presentation/landing_page/penjual/keranjang/bloc/keranjang_penjual_state.dart';
 import 'package:growell/presentation/landing_page/penjual/produk/bloc/add_produk_event.dart';
@@ -11,11 +14,14 @@ import 'package:growell/presentation/landing_page/penjual/produk/bloc/add_produk
 class KeranjangPenjualBloc extends Bloc<KeranjangPenjualEvent, KeranjangPenjualState>{
 
   AddKeranjangProdukPenjualUseCase? addKeranjangProdukPenjualUseCase;
+  GetListKeranjangProdukPenjualUseCase? getListKeranjangProdukPenjualUseCase;
 
   KeranjangPenjualBloc(
-    this.addKeranjangProdukPenjualUseCase
+    this.addKeranjangProdukPenjualUseCase,
+    this.getListKeranjangProdukPenjualUseCase
   ) : super(InitialKeranjangPenjualState()){
     on<AddKeranjangPenjualEvent>(addKeranjangProduk);
+    on<GetListKeranjangProdukPenjualEvent>(getListKeranjangProdukPenjual);
   }
 
   @override
@@ -32,6 +38,21 @@ class KeranjangPenjualBloc extends Bloc<KeranjangPenjualEvent, KeranjangPenjualS
       response.fold(
         (l) => LoadedKeranjangPenjualState(entity: l.entity), 
         (r) => ErrorKeranjangPenjualState(message: r.errorData.errorMessage)
+      )
+    );
+  }
+
+  void getListKeranjangProdukPenjual(GetListKeranjangProdukPenjualEvent event, Emitter<KeranjangPenjualState> emit) async {
+    emit(LoadingGetListKeranjangProdukPenjualState());
+    var response = await getListKeranjangProdukPenjualUseCase!.call(params: event.idUser!);
+    emit(
+      response.fold(
+        (l) => SuccessGetListKeranjangProdukPenjualState(
+          entity: l.entity!
+        ), 
+        (r) => ErrorGetListKeranjangProdukPenjualState(
+          message: r.errorData.errorMessage
+        )
       )
     );
   }

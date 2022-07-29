@@ -16,3 +16,8 @@ class ThrowErrorAddKeranjangPenjual extends AddKeranjangPenjualEvent{
   Object message;
   ThrowErrorAddKeranjangPenjual({required this.message});
 }
+
+class GetListKeranjangProdukPenjualEvent extends KeranjangPenjualEvent {
+  String? idUser;
+  GetListKeranjangProdukPenjualEvent({this.idUser});
+}

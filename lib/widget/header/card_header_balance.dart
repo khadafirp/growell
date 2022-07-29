@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:growell/base/routes_name.dart';
 import 'package:growell/color/list_color.dart';
+import 'package:growell/data/models/list_keranjang_produk_penjual_model.dart';
 
 class CardHeaderBalance extends StatelessWidget {
   String? fullname, badge;
-  CardHeaderBalance({Key? key, this.fullname, this.badge}) : super(key: key);
+  List<ListKeranjangProdukEntity>? listKeranjang;
+  CardHeaderBalance({Key? key, this.fullname, this.badge, this.listKeranjang}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -51,16 +54,48 @@ class CardHeaderBalance extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        height: MediaQuery.of(context).size.height * 0.05,
-                        width: MediaQuery.of(context).size.width * 0.11,
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(30))
-                        ),
-                        child: Icon(
-                          Icons.shopping_cart_rounded,
-                          color: ListColor().baseColor,
+                      InkWell(
+                        onTap: (){
+                          Navigator.of(context).pushNamed(RoutesName.keranjangPenjual);
+                        },
+                        child: Container(
+                          height: MediaQuery.of(context).size.height * 0.05,
+                          width: MediaQuery.of(context).size.width * 0.11,
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(30))
+                          ),
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Icon(
+                                Icons.shopping_cart_rounded,
+                                color: ListColor().baseColor,
+                              ),
+
+                              listKeranjang!.isEmpty ?
+                              const SizedBox() :
+                              Positioned(
+                                top: 0,
+                                right: 0,
+                                child: Container(
+                                  padding: EdgeInsets.all(2),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                                    color: Colors.red
+                                  ),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    listKeranjang!.length.toString(),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 11
+                                    ),
+                                  ),
+                                )
+                              )
+                            ],
+                          ),
                         ),
                       ),
                       Container(

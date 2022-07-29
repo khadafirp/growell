@@ -13,5 +13,5 @@ void presentationModule() {
   injector.registerLazySingleton(() => AddProdukBloc(injector(), injector(), injector()));
   injector.registerLazySingleton(() => BerandaPenjualBloc(injector()));
   injector.registerLazySingleton(() => ListTokoBloc(injector()));
-  injector.registerLazySingleton(() => KeranjangPenjualBloc(injector()));
+  injector.registerLazySingleton(() => KeranjangPenjualBloc(injector(), injector()));
 }

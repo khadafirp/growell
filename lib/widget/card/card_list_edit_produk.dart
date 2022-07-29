@@ -7,8 +7,8 @@ import 'package:growell/utils/currency_formatter.dart';
 
 class CardListEditProduk extends StatelessWidget {
   ProdukPenjualEntity? entity;
-  String? idKategoriUser;
-  CardListEditProduk({Key? key, this.entity, this.idKategoriUser}) : super(key: key);
+  String? idKategoriUser, title;
+  CardListEditProduk({Key? key, this.entity, this.idKategoriUser, this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +53,12 @@ class CardListEditProduk extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width * 0.40,
                     child: Text(
-                      CurrencyFormatter.formatWithoutDecimal(double.parse(entity!.harga_produk!)),
+                      title == null ?
+                      CurrencyFormatter.formatWithoutDecimal(double.parse(entity!.harga_produk!))
+                      :
+                      (CurrencyFormatter.formatWithoutDecimal(double.parse(entity!.harga_produk!)) + " x " + entity!.jumlah_belanjaan.toString() + " = "
+                      +
+                      CurrencyFormatter.formatWithoutDecimal(double.parse(title != null ? entity!.total_amount! : entity!.harga_produk!))),
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontSize: 13,
@@ -91,6 +96,9 @@ class CardListEditProduk extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  title != null ?
+                  const SizedBox()
+                  :
                   Container(
                     width: MediaQuery.of(context).size.width * 0.08,
                     height: MediaQuery.of(context).size.height * 0.04,
@@ -103,6 +111,20 @@ class CardListEditProduk extends StatelessWidget {
                       color: Colors.white,
                     ),
                   ),
+                  title != null ?
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.08,
+                      height: MediaQuery.of(context).size.height * 0.04,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(25)),
+                        color: Colors.red,
+                      ),
+                      child: Icon(
+                        Icons.delete,
+                        color: Colors.white,
+                      ),
+                    )
+                  :
                   InkWell(
                     onTap: (){
                       Navigator.of(context).pushNamed(RoutesName.addProdukPage, arguments: FilterEditProdukDTO(

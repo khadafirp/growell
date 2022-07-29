@@ -42,8 +42,8 @@ class ListProdukPenjualEntity {
 }
 
 class ProdukPenjualEntity {
-  String? id_produk, harga_produk, detail_produk, nama_produk, id_kategori, kode_barcode, id_user, path, size, created_at, updated_at;
-  int? stok;
+  String? id_produk, harga_produk, detail_produk, nama_produk, id_kategori, kode_barcode, id_user, path, size, total_amount, created_at, updated_at;
+  int? stok, jumlah_belanjaan;
 
   ProdukPenjualEntity({
     this.id_produk,
@@ -57,6 +57,8 @@ class ProdukPenjualEntity {
     this.created_at,
     this.updated_at,
     this.harga_produk,
-    this.detail_produk
+    this.detail_produk,
+    this.total_amount,
+    this.jumlah_belanjaan
   });
 }

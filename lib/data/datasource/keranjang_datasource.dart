@@ -5,15 +5,18 @@ import 'package:growell/base/network/base_service.dart';
 import 'package:growell/base/network/result_response.dart';
 import 'package:growell/data/datasource/base_url/base_url.dart';
 import 'package:growell/data/models/add_keranjang_produk_model.dart';
+import 'package:growell/data/models/list_keranjang_produk_penjual_model.dart';
 import 'package:growell/data/parameters/add_keranjang_produk_dto.dart';
 
 abstract class KeranjangDatasources {
   Future<Either<AddKeranjangProdukModel, Error>> addKeranjangProduk(AddKeranjangProdukDTO params);
+  Future<Either<ListKeranjangProdukModel, Error>> getListKeranjangProduk(String params);
 }
 
 class KeranjangDatasourcesImpl extends BaseService implements KeranjangDatasources {
 
   static const String addKeranjangProdukUrl = "/keranjang-produk/add-keranjang-produk";
+  static const String listKeranjangProdukUrl = "/keranjang-produk/list-produk";
 
   @override
   Future<Either<AddKeranjangProdukModel, Error>> addKeranjangProduk(AddKeranjangProdukDTO params) async {
@@ -43,6 +46,26 @@ class KeranjangDatasourcesImpl extends BaseService implements KeranjangDatasourc
 
     if (response is Success) {
       final responseData = AddKeranjangProdukModel.fromJson(response.content);
+      return Left(responseData);
+    } else {
+      return Right(response as Error);
+    }
+  }
+
+  @override
+  Future<Either<ListKeranjangProdukModel, Error>> getListKeranjangProduk(String params) async {
+    ResultResponse response = await callService(
+      url: listKeranjangProdukUrl, 
+      baseUrl: BaseUrl().baseUrl,
+      method: BaseService.getMethod,
+      queryParam: 
+        {
+          "id_user": params
+        }
+    );
+
+    if(response is Success){
+      final responseData = ListKeranjangProdukModel.fromJson(response.content['data']);
       return Left(responseData);
     } else {
       return Right(response as Error);

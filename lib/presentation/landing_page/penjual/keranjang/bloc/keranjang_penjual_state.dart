@@ -1,4 +1,5 @@
 import 'package:growell/data/models/add_keranjang_produk_model.dart';
+import 'package:growell/data/models/list_keranjang_produk_penjual_model.dart';
 
 class KeranjangPenjualState {
   KeranjangPenjualState();
@@ -19,4 +20,16 @@ class LoadedKeranjangPenjualState extends KeranjangPenjualState {
 class ErrorKeranjangPenjualState extends KeranjangPenjualState{
   String? message;
   ErrorKeranjangPenjualState({this.message});
+}
+
+class LoadingGetListKeranjangProdukPenjualState extends KeranjangPenjualState {}
+
+class SuccessGetListKeranjangProdukPenjualState extends KeranjangPenjualState {
+  ListKeranjangProduk? entity;
+  SuccessGetListKeranjangProdukPenjualState({this.entity});
+}
+
+class ErrorGetListKeranjangProdukPenjualState extends KeranjangPenjualState {
+  String message;
+  ErrorGetListKeranjangProdukPenjualState({this.message = ""});
 }

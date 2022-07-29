@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:growell/base/routes_name.dart';
 import 'package:growell/color/list_color.dart';
+import 'package:growell/data/models/list_keranjang_produk_penjual_model.dart';
 import 'package:growell/data/models/list_produk_penjual_model.dart';
 import 'package:growell/data/models/login_model.dart';
 import 'package:growell/data/parameters/filter_edit_produk_dto.dart';
 import 'package:growell/presentation/landing_page/penjual/beranda/bloc/beranda_penjual_bloc.dart';
 import 'package:growell/presentation/landing_page/penjual/beranda/bloc/beranda_penjual_event.dart';
 import 'package:growell/presentation/landing_page/penjual/beranda/bloc/beranda_penjual_state.dart';
+import 'package:growell/presentation/landing_page/penjual/keranjang/bloc/keranjang_penjual_bloc.dart';
+import 'package:growell/presentation/landing_page/penjual/keranjang/bloc/keranjang_penjual_event.dart';
+import 'package:growell/presentation/landing_page/penjual/keranjang/bloc/keranjang_penjual_state.dart';
 import 'package:growell/utils/preference.dart';
 import 'package:growell/widget/card/card_list_produk.dart';
 import 'package:growell/widget/header/card_header_balance.dart';
@@ -23,7 +27,9 @@ class _BerandaPenjualPageState extends State<BerandaPenjualPage> {
 
   bool showListFloating = false;
   BerandaPenjualBloc? _berandaPenjualBloc;
+  KeranjangPenjualBloc? _keranjangPenjualBloc;
   List<ProdukPenjualEntity>? listProduk;
+  List<ListKeranjangProdukEntity>? listKeranjang = [];
   bool isLoading = false;
   String? idUser, idKategori, fullname;
 
@@ -44,6 +50,11 @@ class _BerandaPenjualPageState extends State<BerandaPenjualPage> {
           idUser: idUser!
         )
       );
+      _keranjangPenjualBloc!.add(
+        GetListKeranjangProdukPenjualEvent(
+          idUser: idUser!
+        )
+      );
     });
   }
 
@@ -53,7 +64,43 @@ class _BerandaPenjualPageState extends State<BerandaPenjualPage> {
     super.initState();
 
     _berandaPenjualBloc = BlocProvider.of<BerandaPenjualBloc>(context);
+    _keranjangPenjualBloc = BlocProvider.of<KeranjangPenjualBloc>(context);
     retrieveLocalStorage();
+  }
+
+  listener(){
+    return BlocConsumer<KeranjangPenjualBloc, KeranjangPenjualState>(
+      bloc: _keranjangPenjualBloc,
+      builder: (context, state) {
+        return const SizedBox();
+      }, 
+      listener: (context, state) {
+        print("status state = " + state.toString());
+        if(state is SuccessGetListKeranjangProdukPenjualState){
+          listKeranjang!.clear();
+          for (var item in state.entity!.entity!) {
+            listKeranjang!.add(
+              ListKeranjangProdukEntity(
+                created_at: item.created_at,
+                detail_produk: item.detail_produk,
+                edited_at: item.edited_at,
+                harga_produk: item.harga_produk,
+                id_keranjang_produk: item.id_keranjang_produk,
+                id_keranjang_toko: item.id_keranjang_toko,
+                id_produk: item.id_produk,
+                id_user: item.id_user,
+                jumlah_belanjaan: item.jumlah_belanjaan,
+                kode_barcode: item.kode_barcode,
+                nama_produk: item.nama_produk,
+                path: item.path,
+                total_amount: item.total_amount
+              )
+            );
+          }
+          setState(() {});
+        }
+      },
+    );
   }
 
   getListProduk(){
@@ -262,9 +309,11 @@ class _BerandaPenjualPageState extends State<BerandaPenjualPage> {
     return Scaffold(
       body: Stack(
         children: [
+          listener(),
           CardHeaderBalance(
             fullname: fullname,
             badge: idKategori,
+            listKeranjang: listKeranjang!,
           ),
           Positioned(
             top: 0,
