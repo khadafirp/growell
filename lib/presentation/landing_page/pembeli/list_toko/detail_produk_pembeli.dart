@@ -1,9 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:growell/base/routes_name.dart';
+import 'package:growell/color/list_color.dart';
 import 'package:growell/data/models/list_produk_penjual_model.dart';
+import 'package:growell/data/parameters/add_keranjang_produk_dto.dart';
+import 'package:growell/data/parameters/add_keranjang_toko_dto.dart';
+import 'package:growell/presentation/landing_page/pembeli/list_toko/bloc/list_toko_bloc.dart';
+import 'package:growell/presentation/landing_page/pembeli/list_toko/bloc/list_toko_event.dart';
+import 'package:growell/presentation/landing_page/pembeli/list_toko/bloc/list_toko_state.dart';
+import 'package:growell/presentation/landing_page/penjual/keranjang/bloc/keranjang_penjual_bloc.dart';
+import 'package:growell/presentation/landing_page/penjual/keranjang/bloc/keranjang_penjual_event.dart';
+import 'package:growell/presentation/landing_page/penjual/keranjang/bloc/keranjang_penjual_state.dart';
 import 'package:growell/utils/currency_formatter.dart';
 import 'package:growell/widget/button/button_base_custom.dart';
 import 'package:growell/widget/button/button_border_custom.dart';
 import 'package:growell/widget/child_page/custom_child_page.dart';
+import 'package:growell/widget/dialog/loading_dialog_view.dart';
+import 'package:uuid/uuid.dart';
 
 class DetailProdukPembeli extends StatefulWidget {
   ProdukPenjualEntity? entity;
@@ -14,6 +28,95 @@ class DetailProdukPembeli extends StatefulWidget {
 }
 
 class _DetailProdukPembeliState extends State<DetailProdukPembeli> {
+
+  ListTokoBloc? listTokoBloc;
+  KeranjangPenjualBloc? keranjangPenjualBloc;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    listTokoBloc = BlocProvider.of<ListTokoBloc>(context);
+    keranjangPenjualBloc = BlocProvider.of<KeranjangPenjualBloc>(context);
+  }
+
+  listenerAddKeranjangToko(){
+    return BlocConsumer<ListTokoBloc, ListTokoState>(
+      builder: (context, state) {
+        return const SizedBox();
+      }, 
+      listener: (context, state) {
+        if(state is SuccessAddKeranjangTokoState){
+          keranjangPenjualBloc!.add(
+            AddKeranjangPenjualEvent(
+              params: AddKeranjangProdukDTO(
+                id_keranjang_produk: Uuid().v4(),
+                id_produk: widget.entity!.id_produk,
+                detail_produk: widget.entity!.detail_produk,
+                created_at: DateTime.now().toString(),
+                edited_at: DateTime.now().toString(),
+                harga_produk: widget.entity!.harga_produk,
+                id_keranjang_toko: widget.entity!.id_user,
+                id_user: widget.entity!.id_pembeli,
+                jumlah_belanjaan: 1,
+                kode_barcode: widget.entity!.id_produk,
+                nama_produk: widget.entity!.nama_produk,
+                path: widget.entity!.path,
+                total_amount: widget.entity!.harga_produk
+              )
+            )
+          );
+        }
+      },
+    );
+  }
+
+  listenerAddKeranjangProduk() {
+    return BlocConsumer<KeranjangPenjualBloc, KeranjangPenjualState>(
+      bloc: keranjangPenjualBloc,
+      builder: (context, state){
+        return const SizedBox();
+      }, 
+      listener: (context, state){
+        if(state is LoadingKeranjangPenjualState){
+          showDialog(
+            context: context,
+            builder: (_) {
+              return LoadingDialogView();
+            }
+          );
+        }
+        if(state is LoadedKeranjangPenjualState){
+          Navigator.of(context).pop();
+          Fluttertoast.showToast(
+            msg: "Produk berhasil masuk keranjang.",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: ListColor().baseColor,
+            textColor: Colors.white,
+            fontSize: 16.0
+          );
+          Future.delayed(const Duration(seconds: 1), (){
+            Navigator.of(context).pushNamedAndRemoveUntil(RoutesName.landingPage, (route) => false);
+          });
+        }
+        if(state is ErrorKeranjangPenjualState){
+          Navigator.of(context).pop();
+          Fluttertoast.showToast(
+            msg: state.message!,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0
+          );
+        }
+      }
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomChildPage(
@@ -137,8 +240,19 @@ class _DetailProdukPembeliState extends State<DetailProdukPembeli> {
                   text: "Beli",
                 ),
                 const SizedBox(height: 16,),
+                listenerAddKeranjangToko(),
+                listenerAddKeranjangProduk(),
                 ButtonBorderCustom(
-                  function: (){},
+                  function: (){
+                    listTokoBloc!.add(
+                      AddKeranjangTokoEvent(
+                        params: AddKeranjangTokoDTO(
+                          id_keranjang_toko: widget.entity!.id_user,
+                          id_user: widget.entity!.id_pembeli
+                        )
+                      )
+                    );
+                  },
                   text: "Masuk ke Keranjang",
                 )
               ],

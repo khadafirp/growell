@@ -216,13 +216,13 @@ class _DetailProdukPenjualState extends State<DetailProdukPenjual> {
                           created_at: DateTime.now().toString(),
                           edited_at: DateTime.now().toString(),
                           harga_produk: widget.entity!.harga_produk,
-                          id_keranjang_toko: "",
+                          id_keranjang_toko: widget.entity!.id_user,
                           id_user: widget.entity!.id_user,
                           jumlah_belanjaan: 1,
-                          kode_barcode: "",
+                          kode_barcode: widget.entity!.id_produk,
                           nama_produk: widget.entity!.nama_produk,
                           path: widget.entity!.path,
-                          total_amount: widget.entity!.harga_produk
+                          total_amount: widget.entity!.harga_produk,
                         )
                       )
                     );

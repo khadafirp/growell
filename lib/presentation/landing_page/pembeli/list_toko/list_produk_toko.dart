@@ -23,6 +23,7 @@ class _ListProdukTokoState extends State<ListProdukToko> {
   bool isLoading = false;
   bool isShow = false;
   String idKategoriUser = "";
+  String idUser = "";
 
   @override
   void initState() {
@@ -35,8 +36,10 @@ class _ListProdukTokoState extends State<ListProdukToko> {
 
   void fetchApi() async {
     var idKategori = await Preference().getStringValue("id_kategori");
+    var idUsr = await Preference().getStringValue("id_user");
     setState(() {
       idKategoriUser = idKategori;
+      idUser = idUsr;
     });
     Future.delayed(const Duration(milliseconds: 100), (){
       _addProdukBloc!.add(GetListProdukPenjualEvent(
@@ -132,7 +135,8 @@ class _ListProdukTokoState extends State<ListProdukToko> {
                         path: dataProduk![index].path,
                         size: dataProduk![index].size,
                         stok: dataProduk![index].stok,
-                        updated_at: dataProduk![index].updated_at
+                        updated_at: dataProduk![index].updated_at,
+                        id_pembeli: idUser
                       ),
                     );
                   },

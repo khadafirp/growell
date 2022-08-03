@@ -29,7 +29,9 @@ class AppRoutes{
     RoutesName.loginPage: (context) => LoginPage(),
     RoutesName.regisPage: (context) => RegisPage(),
     RoutesName.landingPage: (context) => LandingPage(),
-    RoutesName.listTokoPage: (context) => ListTokoPage(),
+    RoutesName.listTokoPage: (context) => ListTokoPage(
+      userKategori: settings.arguments as String,
+    ),
     RoutesName.addProdukPage: (context) => AddProdukPage(
       params: settings.arguments as FilterEditProdukDTO,
     ),
@@ -40,7 +42,9 @@ class AppRoutes{
     RoutesName.detailProdukPembeli: (context) => DetailProdukPembeli(
       entity: settings.arguments as ProdukPenjualEntity,
     ),
-    RoutesName.keranjangPenjual: (context) => KeranjangProdukPenjualPage(),
+    RoutesName.keranjangPenjual: (context) => KeranjangProdukPenjualPage(
+      idUsr: settings.arguments as String,
+    ),
     RoutesName.detailProdukPenjual: (context) => DetailProdukPenjual(
       entity: settings.arguments as ProdukPenjualEntity,
     ),

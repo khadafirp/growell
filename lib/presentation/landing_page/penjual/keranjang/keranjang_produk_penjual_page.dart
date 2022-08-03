@@ -12,7 +12,8 @@ import 'package:growell/widget/card/card_list_edit_produk.dart';
 import 'package:growell/widget/child_page/custom_child_page.dart';
 
 class KeranjangProdukPenjualPage extends StatefulWidget {
-  KeranjangProdukPenjualPage({Key? key}) : super(key: key);
+  String? idUsr;
+  KeranjangProdukPenjualPage({Key? key, this.idUsr}) : super(key: key);
 
   @override
   _KeranjangProdukPenjualPageState createState() => _KeranjangProdukPenjualPageState();
@@ -39,7 +40,7 @@ class _KeranjangProdukPenjualPageState extends State<KeranjangProdukPenjualPage>
     nama_toko = await Preference().getStringValue("nama_toko");
 
     setState(() {
-      idUser = id_user;
+      idUser = widget.idUsr == null ? id_user : widget.idUsr!;
       idKategori = id_kategori;
       fullname = nama_lengkap;
       namaToko = nama_toko;
@@ -60,7 +61,7 @@ class _KeranjangProdukPenjualPageState extends State<KeranjangProdukPenjualPage>
     super.initState();
     _keranjangPenjualBloc = BlocProvider.of<KeranjangPenjualBloc>(context);
     setState(() {
-      namaToko = "";
+      namaToko = "Nama Toko";
     });
     retrieveLocalStorage();
   }
@@ -130,99 +131,111 @@ class _KeranjangProdukPenjualPageState extends State<KeranjangProdukPenjualPage>
           child: Column(
             children: [
               listener(),
-              const SizedBox(height: 32,),
-              Text(
-                namaToko!,
-                style: TextStyle(
-                  fontSize: 19,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black
-                ),
-              ),
-              const SizedBox(height: 16,),
-              isLoading ?
-              const Center(
-                child: CircularProgressIndicator(),
-              )
-              :
               isShow ?
               listKeranjang!.isEmpty ?
               Center(
-                child: Text("Maaf, belum ada produk")
+                child: Text("Maaf, keranjang kosong")
               )
               :
-              Container(
-                child: ListView.builder(
-                  padding: const EdgeInsets.only(bottom: 16, top: 8),
-                  shrinkWrap: true,
-                  itemCount: listKeranjang!.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return CardListEditProduk(
-                      title: "keranjang",
-                      entity: ProdukPenjualEntity(
-                        created_at: listKeranjang![index].created_at,
-                        detail_produk: listKeranjang![index].detail_produk,
-                        harga_produk: listKeranjang![index].harga_produk,
-                        id_kategori: id_kategori,
-                        id_produk: listKeranjang![index].id_produk,
-                        id_user: listKeranjang![index].id_user,
-                        kode_barcode: listKeranjang![index].kode_barcode,
-                        nama_produk: listKeranjang![index].nama_produk,
-                        path: listKeranjang![index].path,
-                        // size: "",
-                        // stok: 0,
-                        updated_at: listKeranjang![index].edited_at,
-                        total_amount: listKeranjang![index].total_amount,
-                        jumlah_belanjaan: listKeranjang![index].jumlah_belanjaan
-                      ),
-                    );
-                  }
-                ),
+              Column(
+                children: [
+                  const SizedBox(height: 32,),
+                  Text(
+                    namaToko!.isEmpty ? "Nama Toko" : namaToko!,
+                    style: TextStyle(
+                      fontSize: 19,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black
+                    ),
+                  ),
+                  const SizedBox(height: 16,),
+                  isLoading ?
+                  const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                  :
+                  isShow ?
+                  listKeranjang!.isEmpty ?
+                  Center(
+                    child: Text("Maaf, keranjang kosong")
+                  )
+                  :
+                  Container(
+                    child: ListView.builder(
+                      padding: const EdgeInsets.only(bottom: 16, top: 8),
+                      shrinkWrap: true,
+                      itemCount: listKeranjang!.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return CardListEditProduk(
+                          title: "keranjang",
+                          entity: ProdukPenjualEntity(
+                            created_at: listKeranjang![index].created_at,
+                            detail_produk: listKeranjang![index].detail_produk,
+                            harga_produk: listKeranjang![index].harga_produk,
+                            id_kategori: id_kategori,
+                            id_produk: listKeranjang![index].id_produk,
+                            id_user: listKeranjang![index].id_user,
+                            kode_barcode: listKeranjang![index].kode_barcode,
+                            nama_produk: listKeranjang![index].nama_produk,
+                            path: listKeranjang![index].path,
+                            // size: "",
+                            // stok: 0,
+                            updated_at: listKeranjang![index].edited_at,
+                            total_amount: listKeranjang![index].total_amount,
+                            jumlah_belanjaan: listKeranjang![index].jumlah_belanjaan
+                          ),
+                        );
+                      }
+                    ),
+                  )
+                  :
+                  const SizedBox(),
+
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    margin: EdgeInsets.only(left: 8, right: 8),
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      border: Border.all(width: 1, color: Colors.grey)
+                    ),
+                    child: Column(
+                      children: [
+                        Text(
+                          "Total Bayar",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: Colors.black
+                          )
+                        ),
+                        const SizedBox(height: 16,),
+                        Text(
+                          CurrencyFormatter.formatWithoutDecimal(double.parse(totalBayar)),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: Colors.black
+                          )
+                        ),
+                      ],
+                    )
+                  ),
+
+                  Container(
+                    margin: EdgeInsets.only(top: 32, left: 8, right: 8),
+                    child: ButtonBaseCustom(
+                      function: (){
+
+                      },
+                      text: "Bayar",
+                    ),
+                  )
+                ],
               )
               :
-              const SizedBox(),
-
-              Container(
-                width: MediaQuery.of(context).size.width,
-                margin: EdgeInsets.only(left: 8, right: 8),
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  border: Border.all(width: 1, color: Colors.grey)
-                ),
-                child: Column(
-                  children: [
-                    Text(
-                      "Total Bayar",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: Colors.black
-                      )
-                    ),
-                    const SizedBox(height: 16,),
-                    Text(
-                      CurrencyFormatter.formatWithoutDecimal(double.parse(totalBayar)),
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: Colors.black
-                      )
-                    ),
-                  ],
-                )
-              ),
-
-              Container(
-                margin: EdgeInsets.only(top: 32, left: 8, right: 8),
-                child: ButtonBaseCustom(
-                  function: (){
-
-                  },
-                  text: "Bayar",
-                ),
-              )
+              const SizedBox()
             ],
           ),
         ),

@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:growell/base/module/base_modul.dart';
+import 'package:growell/presentation/landing_page/pembeli/beranda/bloc/beranda_pembeli_bloc.dart';
 import 'package:growell/presentation/landing_page/pembeli/list_toko/bloc/list_toko_bloc.dart';
 import 'package:growell/presentation/landing_page/penjual/beranda/bloc/beranda_penjual_bloc.dart';
 import 'package:growell/presentation/landing_page/penjual/keranjang/bloc/keranjang_penjual_bloc.dart';
@@ -26,6 +27,9 @@ class AppBloc{
     ),
     BlocProvider<KeranjangPenjualBloc>(
       create: (context) => injector.get<KeranjangPenjualBloc>(),
+    ),
+    BlocProvider<BerandaPembeliBloc>(
+      create: (context) => injector.get<BerandaPembeliBloc>(),
     )
   ];
 }

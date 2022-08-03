@@ -5,18 +5,47 @@ import 'package:growell/base/network/base_service.dart';
 import 'package:growell/base/network/result_response.dart';
 import 'package:growell/data/datasource/base_url/base_url.dart';
 import 'package:growell/data/models/add_keranjang_produk_model.dart';
+import 'package:growell/data/models/add_keranjang_toko_model.dart';
 import 'package:growell/data/models/list_keranjang_produk_penjual_model.dart';
+import 'package:growell/data/models/list_keranjang_toko_model.dart';
 import 'package:growell/data/parameters/add_keranjang_produk_dto.dart';
+import 'package:growell/data/parameters/add_keranjang_toko_dto.dart';
 
 abstract class KeranjangDatasources {
   Future<Either<AddKeranjangProdukModel, Error>> addKeranjangProduk(AddKeranjangProdukDTO params);
   Future<Either<ListKeranjangProdukModel, Error>> getListKeranjangProduk(String params);
+  Future<Either<AddKeranjangTokoModel, Error>> addKeranjangToko(AddKeranjangTokoDTO params);
+  Future<Either<ListKeranjangTokoModel, Error>> getListKeranjangToko();
 }
 
 class KeranjangDatasourcesImpl extends BaseService implements KeranjangDatasources {
 
+  static const String addKeranjangTokoUrl = "/keranjang-toko/tambah-keranjang-toko";
   static const String addKeranjangProdukUrl = "/keranjang-produk/add-keranjang-produk";
   static const String listKeranjangProdukUrl = "/keranjang-produk/list-produk";
+  static const String listKeranjangTokoUrl = "/keranjang-toko/list-keranjang-toko";
+
+  @override
+  Future<Either<AddKeranjangTokoModel, Error>> addKeranjangToko(AddKeranjangTokoDTO params) async {
+    final ResultResponse response = await callService(
+      url: addKeranjangTokoUrl, 
+      baseUrl: BaseUrl().baseUrl,
+      method: BaseService.postMethod,
+      dataBody: FormData.fromMap(
+        {
+          "id_keranjang_toko": params.id_keranjang_toko,
+          "id_user": params.id_user,
+        }
+      )
+    );
+
+    if (response is Success) {
+      final responseData = AddKeranjangTokoModel.fromJson(response.content);
+      return Left(responseData);
+    } else {
+      return Right(response as Error);
+    }
+  }
 
   @override
   Future<Either<AddKeranjangProdukModel, Error>> addKeranjangProduk(AddKeranjangProdukDTO params) async {
@@ -60,12 +89,30 @@ class KeranjangDatasourcesImpl extends BaseService implements KeranjangDatasourc
       method: BaseService.getMethod,
       queryParam: 
         {
-          "id_user": params
+          "id_keranjang_toko": params
         }
     );
 
     if(response is Success){
       final responseData = ListKeranjangProdukModel.fromJson(response.content['data']);
+      return Left(responseData);
+    } else {
+      return Right(response as Error);
+    }
+  }
+
+  @override
+  Future<Either<ListKeranjangTokoModel, Error>> getListKeranjangToko() async {
+    ResultResponse response = await callService(
+      url: listKeranjangTokoUrl, 
+      baseUrl: BaseUrl().baseUrl,
+      method: BaseService.getMethod,
+    );
+
+    print("keranjang toko = " + response.content.toString());
+
+    if(response is Success){
+      final responseData = ListKeranjangTokoModel.fromJson(response.content['data']);
       return Left(responseData);
     } else {
       return Right(response as Error);

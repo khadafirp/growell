@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:growell/base/routes_name.dart';
+import 'package:growell/data/models/list_keranjang_toko_model.dart';
 import 'package:growell/data/models/login_model.dart';
+import 'package:growell/presentation/landing_page/pembeli/beranda/bloc/beranda_pembeli_bloc.dart';
+import 'package:growell/presentation/landing_page/pembeli/beranda/bloc/beranda_pembeli_event.dart';
+import 'package:growell/presentation/landing_page/pembeli/beranda/bloc/beranda_pembeli_state.dart';
 import 'package:growell/utils/preference.dart';
 import 'package:growell/widget/header/card_header_pembeli.dart';
 
@@ -14,6 +19,8 @@ class BerandaPembeliPage extends StatefulWidget {
 class _BerandaPembeliPageState extends State<BerandaPembeliPage> {
 
   String? idUser, idKategori, fullname;
+  BerandaPembeliBloc? berandaPembeliBloc;
+  List<ListKeranjangPemilikTokoEntity> entity = [];
 
   retrieveLocalStorage() async {
     var id_user = await Preference().getStringValue("id_user");
@@ -31,7 +38,48 @@ class _BerandaPembeliPageState extends State<BerandaPembeliPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    berandaPembeliBloc = BlocProvider.of<BerandaPembeliBloc>(context);
+    berandaPembeliBloc!.add(
+      GetListKeranjangTokoPembeliEvent()
+    );
     retrieveLocalStorage();
+  }
+  
+  listener(){
+    return BlocConsumer<BerandaPembeliBloc, BerandaPembeliState>(
+      bloc: berandaPembeliBloc,
+      builder: (context, state) {
+        return const SizedBox();
+      }, 
+      listener: (context, state) {
+        if(state is SuccessGetListTokoBerandaPembeliState){
+          entity.clear();
+          for (var item in state.entity!) {
+            entity!.add(
+              ListKeranjangPemilikTokoEntity(
+                alamat_toko: item.alamat_toko,
+                created_at: item.created_at,
+                desc_toko: item.desc_toko,
+                email: item.email,
+                file_size: item.file_size,
+                fullname: item.fullname,
+                id_keranjang_toko: item.id_keranjang_toko,
+                id_user: item.id_user,
+                id_user_pembeli: item.id_user_pembeli,
+                nama_toko: item.nama_toko,
+                no_telp: item.no_telp,
+                password: item.password,
+                path: item.path,
+                updated_at: item.updated_at,
+                user_kategori: item.user_kategori,
+                username: item.username
+              )
+            );
+          }
+          setState(() {});
+        }  
+      },
+    );
   }
 
   @override
@@ -43,12 +91,14 @@ class _BerandaPembeliPageState extends State<BerandaPembeliPage> {
         color: Colors.white,
         child: Column(
           children: [
+            listener(),
             CardHeaderPembeli(
               fullname: fullname,
               badge: idKategori,
+              entity: entity,
             ),
             InkWell(
-              onTap: () => Navigator.of(context).pushNamed(RoutesName.listTokoPage),
+              onTap: () => Navigator.of(context).pushNamed(RoutesName.listTokoPage, arguments: "2"),
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height * 0.72,
