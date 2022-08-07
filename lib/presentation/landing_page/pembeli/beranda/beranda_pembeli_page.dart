@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:growell/base/routes_name.dart';
 import 'package:growell/data/models/list_keranjang_toko_model.dart';
 import 'package:growell/data/models/login_model.dart';
+import 'package:growell/data/parameters/filter_list_toko_dto.dart';
 import 'package:growell/presentation/landing_page/pembeli/beranda/bloc/beranda_pembeli_bloc.dart';
 import 'package:growell/presentation/landing_page/pembeli/beranda/bloc/beranda_pembeli_event.dart';
 import 'package:growell/presentation/landing_page/pembeli/beranda/bloc/beranda_pembeli_state.dart';
@@ -98,7 +99,10 @@ class _BerandaPembeliPageState extends State<BerandaPembeliPage> {
               entity: entity,
             ),
             InkWell(
-              onTap: () => Navigator.of(context).pushNamed(RoutesName.listTokoPage, arguments: "2"),
+              onTap: () => Navigator.of(context).pushNamed(RoutesName.listTokoPage, arguments: FilterListTokoDTO(
+                filter: "toko",
+                userKategori: "2"
+              )),
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height * 0.72,

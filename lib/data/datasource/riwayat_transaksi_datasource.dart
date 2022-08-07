@@ -68,7 +68,8 @@ class RiwayatTransaksiDatasourcesImpl extends BaseService implements RiwayatTran
           "harga_produk": params.harga_produk,
           "id_produk": params.id_produk,
           "created_at": params.created_at,
-          "updated_at": params.updated_at
+          "updated_at": params.updated_at,
+          "jumlah_belanja": params.jumlah_belanja.toString()
         }
       )
     );

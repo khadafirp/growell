@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:growell/base/routes_name.dart';
 import 'package:growell/color/list_color.dart';
 import 'package:growell/data/models/list_keranjang_toko_model.dart';
+import 'package:growell/data/parameters/filter_list_toko_dto.dart';
 
 class CardHeaderPembeli extends StatelessWidget {
   String? fullname, badge;
@@ -61,7 +62,10 @@ class CardHeaderPembeli extends StatelessWidget {
                     children: [
                       InkWell(
                         onTap: (){
-                          Navigator.of(context).pushNamed(RoutesName.listTokoPage, arguments: "2");
+                          Navigator.of(context).pushNamed(RoutesName.listTokoPage, arguments: FilterListTokoDTO(
+                            filter: "keranjang",
+                            userKategori: "2"
+                          ));
                         },
                         child: Container(
                           height: MediaQuery.of(context).size.height * 0.05,

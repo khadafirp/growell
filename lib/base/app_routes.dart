@@ -3,6 +3,7 @@ import 'package:growell/base/routes_name.dart';
 import 'package:growell/data/models/list_produk_penjual_model.dart';
 import 'package:growell/data/models/login_model.dart';
 import 'package:growell/data/parameters/filter_edit_produk_dto.dart';
+import 'package:growell/data/parameters/filter_list_toko_dto.dart';
 import 'package:growell/data/parameters/get_list_keranjang_produk_dto.dart';
 import 'package:growell/presentation/first_page.dart';
 import 'package:growell/presentation/landing_page/landing_page.dart';
@@ -31,7 +32,7 @@ class AppRoutes{
     RoutesName.regisPage: (context) => RegisPage(),
     RoutesName.landingPage: (context) => LandingPage(),
     RoutesName.listTokoPage: (context) => ListTokoPage(
-      userKategori: settings.arguments as String,
+      params: settings.arguments as FilterListTokoDTO,
     ),
     RoutesName.addProdukPage: (context) => AddProdukPage(
       params: settings.arguments as FilterEditProdukDTO,

@@ -3,18 +3,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:growell/base/routes_name.dart';
 import 'package:growell/data/models/list_keranjang_toko_model.dart';
 import 'package:growell/data/models/list_user_model.dart';
+import 'package:growell/data/parameters/filter_list_toko_dto.dart';
+import 'package:growell/data/parameters/get_list_keranjang_produk_dto.dart';
 import 'package:growell/presentation/landing_page/pembeli/beranda/bloc/beranda_pembeli_bloc.dart';
 import 'package:growell/presentation/landing_page/pembeli/beranda/bloc/beranda_pembeli_event.dart';
 import 'package:growell/presentation/landing_page/pembeli/beranda/bloc/beranda_pembeli_state.dart';
 import 'package:growell/presentation/landing_page/pembeli/list_toko/bloc/list_toko_bloc.dart';
 import 'package:growell/presentation/landing_page/pembeli/list_toko/bloc/list_toko_event.dart';
 import 'package:growell/presentation/landing_page/pembeli/list_toko/bloc/list_toko_state.dart';
+import 'package:growell/utils/preference.dart';
 import 'package:growell/widget/card/card_produk_new.dart';
 import 'package:growell/widget/child_page/custom_child_page.dart';
 
 class ListTokoPage extends StatefulWidget {
-  String? userKategori;
-  ListTokoPage({Key? key, this.userKategori}) : super(key: key);
+  FilterListTokoDTO? params;
+  ListTokoPage({Key? key, this.params}) : super(key: key);
 
   @override
   _ListTokoPageState createState() => _ListTokoPageState();
@@ -26,19 +29,27 @@ class _ListTokoPageState extends State<ListTokoPage> {
   BerandaPembeliBloc? berandaPembeliBloc;
   List<UserEntity> dataUser = [];
   List<ListKeranjangPemilikTokoEntity> dataToko = [];
+  var idUser = "";
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
     listTokoBloc = BlocProvider.of<ListTokoBloc>(context);
     berandaPembeliBloc = BlocProvider.of<BerandaPembeliBloc>(context);
-    if(widget.userKategori == null){
+    getValueLocalStorage();
+    if(widget.params!.filter != "keranjang"){
       listTokoBloc!.add(GetListTokoEvent());
     } else {
       berandaPembeliBloc!.add(GetListKeranjangTokoPembeliEvent());
     }
+  }
+
+  getValueLocalStorage() async {
+    var id_user = await Preference().getStringValue("id_user");
+    setState(() {
+      idUser = id_user;
+    });
   }
 
   Widget listener(){
@@ -119,7 +130,7 @@ class _ListTokoPageState extends State<ListTokoPage> {
     return CustomChildPage(
       child: Column(
         children: [
-          widget.userKategori == null ?
+          widget.params!.filter != "keranjang" ?
           Column(
             children: [
               listener(),
@@ -178,7 +189,10 @@ class _ListTokoPageState extends State<ListTokoPage> {
                   itemBuilder: (BuildContext context, int index) {
                     return CardProdukNew(
                       function: (){
-                        Navigator.of(context).pushNamed(RoutesName.keranjangPenjual, arguments: dataToko[index].id_user);
+                        Navigator.of(context).pushNamed(RoutesName.keranjangPenjual, arguments: GetListKeranjangProdukDTO(
+                          id_keranjang_toko: dataToko[index].id_user,
+                          id_user: idUser
+                        ));
                       },
                       entity: UserEntity(
                         alamat_toko: dataToko[index].alamat_toko,
@@ -201,7 +215,7 @@ class _ListTokoPageState extends State<ListTokoPage> {
           )
         ],
       ),
-      title: widget.userKategori == null ? "Daftar Toko" : "Keranjang Toko",
+      title: widget.params!.filter != "keranjang" ? "Daftar Toko" : "Keranjang Toko",
     );
   }
 }

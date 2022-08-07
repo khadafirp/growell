@@ -8,7 +8,8 @@ class AddRiwayatTransaksiDetailDTO{
   id_user,
   id_toko,
   created_at,
-  updated_at;
+  updated_at, 
+  jumlah_belanja;
 
   int? status_transaksi;
 
@@ -25,6 +26,7 @@ class AddRiwayatTransaksiDetailDTO{
       this.nama_produk,
       this.status_transaksi,
       this.updated_at,
+      this.jumlah_belanja
     }
   );
 }

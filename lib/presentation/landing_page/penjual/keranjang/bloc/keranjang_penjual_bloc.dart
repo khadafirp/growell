@@ -106,7 +106,8 @@ class KeranjangPenjualBloc extends Bloc<KeranjangPenjualEvent, KeranjangPenjualS
       id_user: event.params!.id_user,
       nama_produk: event.params!.nama_produk,
       status_transaksi: event.params!.status_transaksi,
-      updated_at: event.params!.updated_at
+      updated_at: event.params!.updated_at,
+      jumlah_belanja: event.params!.jumlah_belanja
     ));
     emit(
       response.fold(

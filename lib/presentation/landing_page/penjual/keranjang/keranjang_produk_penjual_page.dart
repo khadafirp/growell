@@ -36,6 +36,7 @@ class _KeranjangProdukPenjualPageState extends State<KeranjangProdukPenjualPage>
   var nama_lengkap = "";
   var totalBayar = "0";
   var nama_toko = "";
+  var banyak = 0;
 
 
   retrieveLocalStorage() async {
@@ -56,7 +57,7 @@ class _KeranjangProdukPenjualPageState extends State<KeranjangProdukPenjualPage>
         GetListKeranjangProdukPenjualEvent(
           params: GetListKeranjangProdukDTO(
             id_user: id_user,
-            id_keranjang_toko: id_user
+            id_keranjang_toko: id_kategori == "2" ? widget.params!.id_keranjang_toko : id_user
           )
         )
       );
@@ -151,8 +152,9 @@ class _KeranjangProdukPenjualPageState extends State<KeranjangProdukPenjualPage>
                   id_toko: state.entity!.id_toko,
                   id_user: state.entity!.id_user,
                   nama_produk: item.nama_produk,
-                  status_transaksi: 1,
-                  updated_at: DateTime.now().toString()
+                  status_transaksi: idKategori == "2" ? 0 : 1,
+                  updated_at: DateTime.now().toString(),
+                  jumlah_belanja: item.jumlah_belanjaan.toString()
                 )
               )
             );
