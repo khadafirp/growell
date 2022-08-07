@@ -6,6 +6,7 @@ import 'package:growell/data/models/list_produk_penjual_model.dart';
 import 'package:growell/data/models/list_user_model.dart';
 import 'package:growell/data/parameters/add_produk_dto.dart';
 import 'package:growell/data/parameters/add_user_dto.dart';
+import 'package:growell/data/parameters/get_list_keranjang_produk_dto.dart';
 import 'package:growell/data/repositories/keranjang_produk_repository.dart';
 import 'package:growell/data/repositories/produk_repository.dart';
 import 'package:growell/data/repositories/user_repository.dart';
@@ -18,7 +19,7 @@ class GetListKeranjangProdukPenjualUseCase{
   GetListKeranjangProdukPenjualUseCase(this.repository);
 
   @override
-  Future<Either<ListKeranjangProdukModel, Error>> call({required String params}) async {
-    return await repository.getListKeranjangProduk(params);
+  Future<Either<ListKeranjangProdukModel, Error>> call({GetListKeranjangProdukDTO? params}) async {
+    return await repository.getListKeranjangProduk(params!);
   }
 }

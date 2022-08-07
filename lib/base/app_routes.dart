@@ -3,6 +3,7 @@ import 'package:growell/base/routes_name.dart';
 import 'package:growell/data/models/list_produk_penjual_model.dart';
 import 'package:growell/data/models/login_model.dart';
 import 'package:growell/data/parameters/filter_edit_produk_dto.dart';
+import 'package:growell/data/parameters/get_list_keranjang_produk_dto.dart';
 import 'package:growell/presentation/first_page.dart';
 import 'package:growell/presentation/landing_page/landing_page.dart';
 import 'package:growell/presentation/landing_page/pembeli/list_toko/detail_produk_pembeli.dart';
@@ -43,7 +44,7 @@ class AppRoutes{
       entity: settings.arguments as ProdukPenjualEntity,
     ),
     RoutesName.keranjangPenjual: (context) => KeranjangProdukPenjualPage(
-      idUsr: settings.arguments as String,
+      params: settings.arguments as GetListKeranjangProdukDTO,
     ),
     RoutesName.detailProdukPenjual: (context) => DetailProdukPenjual(
       entity: settings.arguments as ProdukPenjualEntity,

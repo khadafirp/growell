@@ -10,10 +10,11 @@ import 'package:growell/data/models/list_keranjang_produk_penjual_model.dart';
 import 'package:growell/data/models/list_keranjang_toko_model.dart';
 import 'package:growell/data/parameters/add_keranjang_produk_dto.dart';
 import 'package:growell/data/parameters/add_keranjang_toko_dto.dart';
+import 'package:growell/data/parameters/get_list_keranjang_produk_dto.dart';
 
 abstract class KeranjangDatasources {
   Future<Either<AddKeranjangProdukModel, Error>> addKeranjangProduk(AddKeranjangProdukDTO params);
-  Future<Either<ListKeranjangProdukModel, Error>> getListKeranjangProduk(String params);
+  Future<Either<ListKeranjangProdukModel, Error>> getListKeranjangProduk(GetListKeranjangProdukDTO params);
   Future<Either<AddKeranjangTokoModel, Error>> addKeranjangToko(AddKeranjangTokoDTO params);
   Future<Either<ListKeranjangTokoModel, Error>> getListKeranjangToko();
 }
@@ -82,14 +83,15 @@ class KeranjangDatasourcesImpl extends BaseService implements KeranjangDatasourc
   }
 
   @override
-  Future<Either<ListKeranjangProdukModel, Error>> getListKeranjangProduk(String params) async {
+  Future<Either<ListKeranjangProdukModel, Error>> getListKeranjangProduk(GetListKeranjangProdukDTO params) async {
     ResultResponse response = await callService(
       url: listKeranjangProdukUrl, 
       baseUrl: BaseUrl().baseUrl,
       method: BaseService.getMethod,
       queryParam: 
         {
-          "id_keranjang_toko": params
+          "id_user": params.id_user!,
+          "id_keranjang_toko": params.id_keranjang_toko!
         }
     );
 

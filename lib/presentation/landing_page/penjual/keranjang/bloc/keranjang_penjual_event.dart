@@ -1,4 +1,7 @@
 import 'package:growell/data/parameters/add_keranjang_produk_dto.dart';
+import 'package:growell/data/parameters/add_riwayat_transaksi_detail_dto.dart';
+import 'package:growell/data/parameters/add_riwayat_transaksi_dto.dart';
+import 'package:growell/data/parameters/get_list_keranjang_produk_dto.dart';
 
 class KeranjangPenjualEvent {
   KeranjangPenjualEvent();
@@ -18,6 +21,16 @@ class ThrowErrorAddKeranjangPenjual extends AddKeranjangPenjualEvent{
 }
 
 class GetListKeranjangProdukPenjualEvent extends KeranjangPenjualEvent {
-  String? idUser;
-  GetListKeranjangProdukPenjualEvent({this.idUser});
+  GetListKeranjangProdukDTO? params;
+  GetListKeranjangProdukPenjualEvent({this.params});
+}
+
+class AddRiwayatTransaksiEvent extends KeranjangPenjualEvent{
+  AddRiwayatTransaksiDTO? params;
+  AddRiwayatTransaksiEvent({this.params});
+}
+
+class AddRiwayatTransaksiDetailEvent extends KeranjangPenjualEvent{
+  AddRiwayatTransaksiDetailDTO? params;
+  AddRiwayatTransaksiDetailEvent({this.params});
 }

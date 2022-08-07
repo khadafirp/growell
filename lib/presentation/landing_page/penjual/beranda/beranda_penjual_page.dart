@@ -6,6 +6,7 @@ import 'package:growell/data/models/list_keranjang_produk_penjual_model.dart';
 import 'package:growell/data/models/list_produk_penjual_model.dart';
 import 'package:growell/data/models/login_model.dart';
 import 'package:growell/data/parameters/filter_edit_produk_dto.dart';
+import 'package:growell/data/parameters/get_list_keranjang_produk_dto.dart';
 import 'package:growell/presentation/landing_page/penjual/beranda/bloc/beranda_penjual_bloc.dart';
 import 'package:growell/presentation/landing_page/penjual/beranda/bloc/beranda_penjual_event.dart';
 import 'package:growell/presentation/landing_page/penjual/beranda/bloc/beranda_penjual_state.dart';
@@ -52,7 +53,10 @@ class _BerandaPenjualPageState extends State<BerandaPenjualPage> {
       );
       _keranjangPenjualBloc!.add(
         GetListKeranjangProdukPenjualEvent(
-          idUser: idUser!
+          params: GetListKeranjangProdukDTO(
+            id_user: idUser,
+            id_keranjang_toko: idUser
+          )
         )
       );
     });
@@ -75,8 +79,8 @@ class _BerandaPenjualPageState extends State<BerandaPenjualPage> {
         return const SizedBox();
       }, 
       listener: (context, state) {
-        print("status state = " + state.toString());
         if(state is SuccessGetListKeranjangProdukPenjualState){
+          print("list keranjang = " + state.entity!.entity!.length.toString());
           listKeranjang!.clear();
           for (var item in state.entity!.entity!) {
             listKeranjang!.add(
@@ -313,6 +317,7 @@ class _BerandaPenjualPageState extends State<BerandaPenjualPage> {
           CardHeaderBalance(
             fullname: fullname,
             badge: idKategori,
+            idUser: idUser,
             listKeranjang: listKeranjang!,
           ),
           Positioned(

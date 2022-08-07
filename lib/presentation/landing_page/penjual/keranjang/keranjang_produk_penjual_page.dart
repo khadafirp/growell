@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:growell/base/routes_name.dart';
 import 'package:growell/data/models/list_keranjang_produk_penjual_model.dart';
 import 'package:growell/data/models/list_produk_penjual_model.dart';
+import 'package:growell/data/parameters/add_riwayat_transaksi_detail_dto.dart';
+import 'package:growell/data/parameters/add_riwayat_transaksi_dto.dart';
+import 'package:growell/data/parameters/get_list_keranjang_produk_dto.dart';
 import 'package:growell/presentation/landing_page/penjual/keranjang/bloc/keranjang_penjual_bloc.dart';
 import 'package:growell/presentation/landing_page/penjual/keranjang/bloc/keranjang_penjual_event.dart';
 import 'package:growell/presentation/landing_page/penjual/keranjang/bloc/keranjang_penjual_state.dart';
@@ -10,10 +14,11 @@ import 'package:growell/utils/preference.dart';
 import 'package:growell/widget/button/button_base_custom.dart';
 import 'package:growell/widget/card/card_list_edit_produk.dart';
 import 'package:growell/widget/child_page/custom_child_page.dart';
+import 'package:uuid/uuid.dart';
 
 class KeranjangProdukPenjualPage extends StatefulWidget {
-  String? idUsr;
-  KeranjangProdukPenjualPage({Key? key, this.idUsr}) : super(key: key);
+  GetListKeranjangProdukDTO? params;
+  KeranjangProdukPenjualPage({Key? key, this.params}) : super(key: key);
 
   @override
   _KeranjangProdukPenjualPageState createState() => _KeranjangProdukPenjualPageState();
@@ -40,16 +45,19 @@ class _KeranjangProdukPenjualPageState extends State<KeranjangProdukPenjualPage>
     nama_toko = await Preference().getStringValue("nama_toko");
 
     setState(() {
-      idUser = widget.idUsr == null ? id_user : widget.idUsr!;
+      idUser = id_user;
       idKategori = id_kategori;
       fullname = nama_lengkap;
       namaToko = nama_toko;
     });
 
-    Future.delayed(const Duration(milliseconds: 100), (){
+    Future.delayed(const Duration(seconds: 1), (){
       _keranjangPenjualBloc!.add(
         GetListKeranjangProdukPenjualEvent(
-          idUser: idUser!
+          params: GetListKeranjangProdukDTO(
+            id_user: id_user,
+            id_keranjang_toko: id_user
+          )
         )
       );
     });
@@ -107,7 +115,8 @@ class _KeranjangProdukPenjualPageState extends State<KeranjangProdukPenjualPage>
           setState(() {
             isLoading = false;
             isShow = true;
-            totalBayar = listBayar!.reduce((value, element) => value + element).toString();
+            totalBayar = listBayar!.isNotEmpty ? 
+                listBayar!.reduce((value, element) => value + element).toString() : "0";
           });
         }
 
@@ -116,6 +125,52 @@ class _KeranjangProdukPenjualPageState extends State<KeranjangProdukPenjualPage>
             isLoading = false;
             isShow = true;
           });
+        }
+      },
+    );
+  }
+
+  listenerAddRiwayatTransaksi(){
+    return BlocConsumer<KeranjangPenjualBloc, KeranjangPenjualState>(
+      bloc: _keranjangPenjualBloc,
+      builder: (context, state) {
+        return const SizedBox();
+      }, 
+      listener: (context, state) {
+        if(state is SuccessAddRiwayatTransaksiPenjualState){
+          for (var item in listKeranjang!) {
+            _keranjangPenjualBloc!.add(
+              AddRiwayatTransaksiDetailEvent(
+                params: AddRiwayatTransaksiDetailDTO(
+                  created_at: item.created_at,
+                  desc_produk: "",
+                  harga_produk: item.harga_produk,
+                  id_produk: item.id_produk,
+                  id_riwayat_transaksi: state.entity!.id_riwayat_transaksi,
+                  id_riwayat_transaksi_detail: Uuid().v4(),
+                  id_toko: state.entity!.id_toko,
+                  id_user: state.entity!.id_user,
+                  nama_produk: item.nama_produk,
+                  status_transaksi: 1,
+                  updated_at: DateTime.now().toString()
+                )
+              )
+            );
+          }
+        }
+      },
+    );
+  }
+  
+  listenerAddriwayatTransaksiDetail(){
+    return BlocConsumer<KeranjangPenjualBloc, KeranjangPenjualState>(
+      bloc: _keranjangPenjualBloc,
+      builder: (context, state) {
+        return const SizedBox();
+      }, 
+      listener: (context, state) {
+        if(state is SuccessAddRiwayatTransaksiDetailPenjualState){
+          Navigator.of(context).pushNamedAndRemoveUntil(RoutesName.landingPage, (route) => false);
         }
       },
     );
@@ -131,10 +186,17 @@ class _KeranjangProdukPenjualPageState extends State<KeranjangProdukPenjualPage>
           child: Column(
             children: [
               listener(),
+              listenerAddRiwayatTransaksi(),
+              listenerAddriwayatTransaksiDetail(),
               isShow ?
               listKeranjang!.isEmpty ?
-              Center(
-                child: Text("Maaf, keranjang kosong")
+              Column(
+                children: [
+                  const SizedBox(height: 50,),
+                  Center(
+                    child: Text("Maaf, keranjang kosong")
+                  ),
+                ],
               )
               :
               Column(
@@ -227,7 +289,17 @@ class _KeranjangProdukPenjualPageState extends State<KeranjangProdukPenjualPage>
                     margin: EdgeInsets.only(top: 32, left: 8, right: 8),
                     child: ButtonBaseCustom(
                       function: (){
-
+                        _keranjangPenjualBloc!.add(
+                          AddRiwayatTransaksiEvent(
+                            params: AddRiwayatTransaksiDTO(
+                              id_riwayat_transaksi: Uuid().v4(),
+                              id_toko: idKategori == "1" ? idUser : widget.params!.id_keranjang_toko,
+                              id_user: idKategori == "1" ? idUser : widget.params!.id_user,
+                              status_transaksi: idKategori == "1" ? 1 : 0,
+                              total_amount: totalBayar.toString()
+                            )
+                          )
+                        );
                       },
                       text: "Bayar",
                     ),

@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:growell/base/routes_name.dart';
 import 'package:growell/color/list_color.dart';
 import 'package:growell/data/models/list_keranjang_produk_penjual_model.dart';
+import 'package:growell/data/parameters/get_list_keranjang_produk_dto.dart';
 
 class CardHeaderBalance extends StatelessWidget {
-  String? fullname, badge;
+  String? fullname, badge, idUser;
   List<ListKeranjangProdukEntity>? listKeranjang;
-  CardHeaderBalance({Key? key, this.fullname, this.badge, this.listKeranjang}) : super(key: key);
+  CardHeaderBalance({Key? key, this.fullname, this.badge, this.idUser, this.listKeranjang}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +57,11 @@ class CardHeaderBalance extends StatelessWidget {
                     children: [
                       InkWell(
                         onTap: (){
-                          Navigator.of(context).pushNamed(RoutesName.keranjangPenjual);
+                          // print(idUser);
+                          Navigator.of(context).pushNamed(RoutesName.keranjangPenjual, arguments: GetListKeranjangProdukDTO(
+                            id_user: idUser,
+                            id_keranjang_toko: idUser
+                          ));
                         },
                         child: Container(
                           height: MediaQuery.of(context).size.height * 0.05,
