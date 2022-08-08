@@ -10,6 +10,7 @@ import 'package:growell/presentation/landing_page/landing_page.dart';
 import 'package:growell/presentation/landing_page/pembeli/list_toko/detail_produk_pembeli.dart';
 import 'package:growell/presentation/landing_page/pembeli/list_toko/list_produk_toko.dart';
 import 'package:growell/presentation/landing_page/pembeli/list_toko/list_toko_page.dart';
+import 'package:growell/presentation/landing_page/pembeli/riwayat_transaksi/detail_riwayat_transaksi_page.dart';
 import 'package:growell/presentation/landing_page/penjual/keranjang/keranjang_produk_penjual_page.dart';
 import 'package:growell/presentation/landing_page/penjual/produk/add_produk_page.dart';
 import 'package:growell/presentation/landing_page/penjual/produk/detail_produk_penjual.dart';
@@ -49,6 +50,9 @@ class AppRoutes{
     ),
     RoutesName.detailProdukPenjual: (context) => DetailProdukPenjual(
       entity: settings.arguments as ProdukPenjualEntity,
+    ),
+    RoutesName.detailRiwayatTransaksi: (context) => DetailRiwayatTransaksiPage(
+      id_riwayat_transaksi: settings.arguments as String,
     ),
   };
 
@@ -95,6 +99,10 @@ class AppRoutes{
         final WidgetBuilder? builder = routes[settings.name];
         return MaterialPageRoute(builder: builder!, settings: settings);
       case RoutesName.detailProdukPenjual:
+        final routes = getRoutesWithSettings(settings);
+        final WidgetBuilder? builder = routes[settings.name];
+        return MaterialPageRoute(builder: builder!, settings: settings);
+      case RoutesName.detailRiwayatTransaksi:
         final routes = getRoutesWithSettings(settings);
         final WidgetBuilder? builder = routes[settings.name];
         return MaterialPageRoute(builder: builder!, settings: settings);

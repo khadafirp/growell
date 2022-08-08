@@ -25,6 +25,9 @@ class CardListEditProduk extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            entity!.path == null ?
+            const SizedBox()
+            :
             ClipRRect(
               borderRadius: BorderRadius.all(Radius.circular(25)),
               child: Image.network(
@@ -112,6 +115,9 @@ class CardListEditProduk extends StatelessWidget {
                     ),
                   ),
                   title != null ?
+                  title == "Detail Riwayat Transaksi" ?
+                    const SizedBox()
+                    :
                     Container(
                       width: MediaQuery.of(context).size.width * 0.08,
                       height: MediaQuery.of(context).size.height * 0.04,

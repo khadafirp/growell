@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:growell/color/list_color.dart';
 import 'package:growell/data/models/login_model.dart';
 import 'package:growell/presentation/landing_page/pembeli/beranda/beranda_pembeli_page.dart';
+import 'package:growell/presentation/landing_page/pembeli/riwayat_transaksi/riwayat_transaksi_page.dart';
 import 'package:growell/presentation/landing_page/penjual/beranda/beranda_penjual_page.dart';
 import 'package:growell/utils/preference.dart';
 
@@ -73,10 +74,7 @@ class _LandingPageState extends State<LandingPage> {
         child: idKategori == "1" ?
         [
           BerandaPenjualPage(),
-          Text(
-            'Index 1: Business',
-            style: optionStyle,
-          ),
+          RiwayatTransaksiPage(),
           Text(
             'Index 2: School',
             style: optionStyle,
@@ -85,10 +83,7 @@ class _LandingPageState extends State<LandingPage> {
         :
         [
           BerandaPembeliPage(),
-          Text(
-            'Index 1: Business',
-            style: optionStyle,
-          ),
+          RiwayatTransaksiPage(),
           Text(
             'Index 2: School',
             style: optionStyle,
